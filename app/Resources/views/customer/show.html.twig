@@ -36,6 +36,9 @@
             <a href="{{ path('customer_edit', { 'id': customer.id }) }}">Edit</a>
         </li>
         <li>
+            <a href="{{ path('project_new', { 'customer': customer.id }) }}">Projekt anlegen</a>
+        </li>
+        <li>
             {{ form_start(delete_form) }}
                 <input type="submit" value="Delete">
             {{ form_end(delete_form) }}

@@ -3,6 +3,7 @@
 namespace AppBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use AppBundle\Entity\Admin;
 
 /**
  * ProjectRepository
@@ -12,4 +13,15 @@ use Doctrine\ORM\EntityRepository;
  */
 class ProjectRepository extends EntityRepository
 {
+    function findByAdmin($adminId)
+    {
+        return $this
+            ->createQueryBuilder('p')
+            ->innerJoin('p.customer', 'c')
+            ->innerJoin('c.admin', 'a')
+            ->where('a.id = :id')
+            ->getQuery()
+            ->setParameter('id', $adminId)
+            ->getResult();
+    }
 }
