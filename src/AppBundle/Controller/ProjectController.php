@@ -39,23 +39,19 @@ class ProjectController extends Controller
     /**
      * Creates a new Project entity.
      *
-     * @Route("/{customer}/new", name="project_new")
+     * @Route("/new", name="project_new")
      * @Method({"GET", "POST"})
      */
-    public function newAction(Request $request, Customer $customer)
+    public function newAction(Request $request)
     {
-        if ($customer->getAdmin()->getId() !== $this->getUser()->getId()) {
-            throw $this->createNotFoundException();
-        }
-
         $project = new Project();
-        $project->setCustomer($customer);
-        $form = $this->createForm('AppBundle\Form\ProjectType', $project);
+        $form = $this->createForm('AppBundle\Form\ProjectType', $project, [
+            'admin' => $this->getUser()->getId()
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $project->setCustomer($customer);
             $em->persist($project);
             $em->flush();
 
@@ -81,7 +77,9 @@ class ProjectController extends Controller
         }
 
         $deleteForm = $this->createDeleteForm($project);
-        $editForm = $this->createForm('AppBundle\Form\ProjectType', $project);
+        $editForm = $this->createForm('AppBundle\Form\ProjectType', $project, [
+            'admin' => $this->getUser()->getId()
+        ]);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {

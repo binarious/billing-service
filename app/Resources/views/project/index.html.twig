@@ -4,14 +4,14 @@
     <h1 class="page-header">
         Projekte
 
-        {#<div class="pull-right">
+        <div class="pull-right">
             <a
                 href="{{ path('project_new') }}"
                 class="btn btn-primary"
             >
                 <i class="fa fa-plus"></i> Hinzufügen
             </a>
-        </div>#}
+        </div>
     </h1>
 
     <table class="table table-striped">
@@ -19,6 +19,7 @@
             <tr>
                 <th>ID</th>
                 <th>Name</th>
+                <th>Kunde</th>
                 <th>Aktionen</th>
             </tr>
         </thead>
@@ -27,6 +28,7 @@
             <tr>
                 <td><a href="{{ path('project_edit', { 'id': project.id }) }}">{{ project.id }}</a></td>
                 <td>{{ project.name }}</td>
+                <td>{{ project.customer }}</td>
                 <td>
                     <a
                         href="{{ path('project_edit', { 'id': project.id }) }}"

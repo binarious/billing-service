@@ -5,6 +5,7 @@ namespace AppBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class ProjectType extends AbstractType
 {
@@ -16,6 +17,15 @@ class ProjectType extends AbstractType
     {
         $builder
             ->add('name')
+            ->add('customer', EntityType::class, [
+                'class' => 'AppBundle:Customer',
+                'query_builder' => function ($er) use ($options) {
+                    return $er
+                        ->createQueryBuilder('c')
+                        ->where('c.admin = :admin')
+                        ->setParameter('admin', $options['admin']);
+                }
+            ])
         ;
     }
 
@@ -25,7 +35,8 @@ class ProjectType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Project'
+            'data_class' => 'AppBundle\Entity\Project',
+            'admin' => ''
         ));
     }
 }

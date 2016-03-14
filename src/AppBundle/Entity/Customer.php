@@ -181,4 +181,9 @@ class Customer
     {
         return $this->admin;
     }
+
+    public function __toString()
+    {
+        return $this->getName();
+    }
 }
