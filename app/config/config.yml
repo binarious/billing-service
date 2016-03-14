@@ -67,6 +67,23 @@ swiftmailer:
     password:  "%mailer_password%"
     spool:     { type: memory }
 
+# Assetic Configuration
+assetic:
+    debug:          %kernel.debug%
+    use_controller: false
+    bundles:        [ AppBundle ]
+    #java: /usr/bin/java
+    filters:
+        cssrewrite: ~
+        sass:    ~
+        compass:
+            scss: true
+            images_dir: %kernel.root_dir%/../web/images
+            generated_images_path: %kernel.root_dir%/../web/images/compiled
+            http_path:  /images
+            http_generated_images_path: /images/compiled
+            style: compressed
+
 sp_bower:
     assetic:
         enabled: false

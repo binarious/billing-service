@@ -13,6 +13,16 @@ imports:
 #        result_cache_driver: apc
 #        query_cache_driver: apc
 
+assetic:
+    node: /usr/bin/node
+    filters:
+        uglifyjs2:
+            bin: /usr/bin/uglifyjs
+            mangle: true
+            compress: true
+            comments: /@preserve|@license|@cc_on|license|LICENSE/
+            apply_to: "\.js$"
+
 monolog:
     handlers:
         main:

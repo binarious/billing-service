@@ -20,7 +20,7 @@ class ProjectController extends Controller
     /**
      * Lists all Project entities.
      *
-     * @Route("/", name="project_index")
+     * @Route("/", name="project")
      * @Method("GET")
      */
     public function indexAction()
@@ -59,32 +59,12 @@ class ProjectController extends Controller
             $em->persist($project);
             $em->flush();
 
-            return $this->redirectToRoute('project_show', array('id' => $project->getId()));
+            return $this->redirectToRoute('project');
         }
 
         return $this->render('project/new.html.twig', array(
             'project' => $project,
             'form' => $form->createView(),
-        ));
-    }
-
-    /**
-     * Finds and displays a Project entity.
-     *
-     * @Route("/{id}", name="project_show")
-     * @Method("GET")
-     */
-    public function showAction(Project $project)
-    {
-        if ($project->getCustomer()->getAdmin()->getId() !== $this->getUser()->getId()) {
-            throw $this->createNotFoundException();
-        }
-
-        $deleteForm = $this->createDeleteForm($project);
-
-        return $this->render('project/show.html.twig', array(
-            'project' => $project,
-            'delete_form' => $deleteForm->createView(),
         ));
     }
 
@@ -109,7 +89,7 @@ class ProjectController extends Controller
             $em->persist($project);
             $em->flush();
 
-            return $this->redirectToRoute('project_edit', array('id' => $project->getId()));
+            return $this->redirectToRoute('project');
         }
 
         return $this->render('project/edit.html.twig', array(
@@ -140,7 +120,7 @@ class ProjectController extends Controller
             $em->flush();
         }
 
-        return $this->redirectToRoute('project_index');
+        return $this->redirectToRoute('project');
     }
 
     /**

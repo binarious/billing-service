@@ -1,21 +1,31 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Project edit</h1>
+    <h1 class="page-header">
+        Projekt bearbeiten
 
-    {{ form_start(edit_form) }}
-        {{ form_widget(edit_form) }}
-        <input type="submit" value="Edit" />
-    {{ form_end(edit_form) }}
-
-    <ul>
-        <li>
-            <a href="{{ path('project_index') }}">Back to the list</a>
-        </li>
-        <li>
+        <div class="pull-right">
             {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
+                <button type="submit" class="btn btn-danger">
+                    <i class="fa fa-trash"></i> Löschen
+                </button>
             {{ form_end(delete_form) }}
-        </li>
-    </ul>
+        </div>
+    </h1>
+
+    <div class="row">
+        <div class="col-md-8">
+            {{ form_start(edit_form) }}
+                {{ form_widget(edit_form) }}
+
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-8">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fa fa-check"></i> Speichern
+                        </button>
+                    </div>
+                </div>
+            {{ form_end(edit_form) }}
+        </div>
+    </div>
 {% endblock %}

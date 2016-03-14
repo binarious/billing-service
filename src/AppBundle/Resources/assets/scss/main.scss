@@ -1,0 +1,9 @@
+$fa-font-path: "/bundles/app/bower_components/font-awesome/fonts";
+
+// Variables for Bootstrap
+$brand-primary: #509765;
+
+@import "../../public/bower_components/bootstrap-sass/assets/stylesheets/_bootstrap.scss";
+@import "../../public/bower_components/font-awesome/scss/font-awesome.scss";
+
+@import "sb-admin";

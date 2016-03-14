@@ -19,7 +19,7 @@ class CustomerController extends Controller
     /**
      * Lists all Customer entities.
      *
-     * @Route("/", name="customer_index")
+     * @Route("/", name="customer")
      * @Method("GET")
      */
     public function indexAction()
@@ -54,32 +54,12 @@ class CustomerController extends Controller
             $em->persist($customer);
             $em->flush();
 
-            return $this->redirectToRoute('customer_show', array('id' => $customer->getId()));
+            return $this->redirectToRoute('customer');
         }
 
         return $this->render('customer/new.html.twig', array(
             'customer' => $customer,
             'form' => $form->createView(),
-        ));
-    }
-
-    /**
-     * Finds and displays a Customer entity.
-     *
-     * @Route("/{id}", name="customer_show")
-     * @Method("GET")
-     */
-    public function showAction(Customer $customer)
-    {
-        if ($customer->getAdmin()->getId() !== $this->getUser()->getId()) {
-            throw $this->createNotFoundException();
-        }
-
-        $deleteForm = $this->createDeleteForm($customer);
-
-        return $this->render('customer/show.html.twig', array(
-            'customer' => $customer,
-            'delete_form' => $deleteForm->createView(),
         ));
     }
 
@@ -105,7 +85,7 @@ class CustomerController extends Controller
             $em->persist($customer);
             $em->flush();
 
-            return $this->redirectToRoute('customer_edit', array('id' => $customer->getId()));
+            return $this->redirectToRoute('customer');
         }
 
         return $this->render('customer/edit.html.twig', array(
@@ -136,7 +116,7 @@ class CustomerController extends Controller
             $em->flush();
         }
 
-        return $this->redirectToRoute('customer_index');
+        return $this->redirectToRoute('customer');
     }
 
     /**

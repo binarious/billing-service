@@ -1,13 +1,87 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8" />
-        <title>{% block title %}Rechnungssystem{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
-        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
-    </body>
-</html>
+
+<meta charset="UTF-8" />
+<title>{% block title %}Rechnungssystem{% endblock %}</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+{% block stylesheets %}
+    {% stylesheets filter="compass" output="css/compiled/*.v1.css"
+        "@AppBundle/Resources/assets/scss/main.scss"
+        "@AppBundle/Resources/public/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.css"
+        "@AppBundle/Resources/public/bower_components/sweetalert/dist/sweetalert.css"
+    %}
+        <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+{% endblock %}
+
+{% macro nav_link(text, url, icon) %}
+    <li
+        {% if url in app.request.attributes.get('_route') %}
+            class="active"
+        {% endif %}
+    >
+        <a href="{{ url(url) }}">
+            <i class="fa fa-fw fa-{{ icon }}"></i> {{ text }}
+        </a>
+    </li>
+{% endmacro %}
+
+<body>
+    <div id="wrapper">
+
+        <!-- Navigation -->
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="{{ path('homepage') }}">Rechnungssystem</a>
+            </div>
+            <!-- Top Menu Items -->
+            <ul class="nav navbar-right top-nav">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> {{ app.user.name }} <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a href="#"><i class="fa fa-fw fa-power-off"></i> Logout</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
+            <div class="collapse navbar-collapse navbar-ex1-collapse">
+                <ul class="nav navbar-nav side-nav">
+                    {{ _self.nav_link('Dashboard', 'homepage', 'dashboard') }}
+                    {{ _self.nav_link('Kunden', 'customer', 'users') }}
+                    {{ _self.nav_link('Projekte', 'project', 'wrench') }}
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </nav>
+
+        <div id="page-wrapper">
+            <div class="container-fluid">
+                {% block body %}{% endblock %}
+            </div>
+            <!-- /.container-fluid -->
+        </div>
+        <!-- /#page-wrapper -->
+    </div>
+    <!-- /#wrapper -->
+
+    {% javascripts output='js/compiled/base-javascript.v11.min.js'
+    '@AppBundle/Resources/public/bower_components/jquery/dist/jquery.min.js'
+    '@AppBundle/Resources/public/bower_components/bootstrap/dist/js/bootstrap.min.js'
+    '@AppBundle/Resources/public/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js'
+    '@AppBundle/Resources/public/bower_components/bootstrap-datepicker/dist/locales/bootstrap-datepicker.de.min.js'
+    '@AppBundle/Resources/public/bower_components/sweetalert/dist/sweetalert.min.js'
+    '@AppBundle/Resources/assets/js/script.js' %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    {% block javascripts %}{% endblock %}
+</body>

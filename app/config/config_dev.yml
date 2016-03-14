@@ -11,6 +11,14 @@ web_profiler:
     toolbar: true
     intercept_redirects: false
 
+assetic:
+    use_controller: true
+    ruby: /usr/local/bin/ruby
+    filters:
+        compass:
+            bin: /usr/local/bin/compass
+            scss: true
+
 monolog:
     handlers:
         main:
