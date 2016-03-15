@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1 class="page-header">
+        Rechnung {{ bill.name }}
+
+        <div class="pull-right">
+            <a href="{{ path('bill_edit', {'id': bill.id}) }}" class="btn btn-primary">
+                <i class="fa fa-edit"></i> Bearbeiten
+            </a>
+        </div>
+    </h1>
+
+    <dl class="dl-horizontal">
+        <dt>ID</dt>
+        <dd>{{ bill.id }}</dd>
+
+        <dt>Rechnungsdatum</dt>
+        <dd>{{ bill.date|date('d.m.Y') }}</dd>
+
+        <dt>Zahlungsziel (in Tagen)</dt>
+        <dd>{{ bill.deadlineDays }}</dd>
+
+        <dt>Forderungsbetrag</dt>
+        <dd>{{ bill.amount|number_format(2, '.', ',') }} €</dd>
+
+        <dt>Erhaltene Erinnerungen</dt>
+        <dd>{{ bill.receivedDuns }}</dd>
+
+        <dt>Bisher bezahlt</dt>
+        <dd>{{ bill.accountBalance|number_format(2, '.', ',') }} €</dd>
+    </dl>
+{% endblock %}

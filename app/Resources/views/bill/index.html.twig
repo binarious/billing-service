@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1 class="page-header">
+        Rechnungen
+
+        <div class="pull-right">
+            <a
+                href="{{ path('bill_new') }}"
+                class="btn btn-primary"
+            >
+                <i class="fa fa-plus"></i> Hinzufügen
+            </a>
+        </div>
+    </h1>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Projekt</th>
+                <th>Kunde</th>
+                <th>Datum</th>
+                <th>Aktionen</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for bill in bills %}
+            <tr>
+                <td><a href="{{ path('bill_edit', { 'id': bill.id }) }}">{{ bill.id }}</a></td>
+                <td>{{ bill.project.name }}</td>
+                <td>{{ bill.project.customer.name }}</td>
+                <td>{{ bill.date|date('d.m.Y') }}</td>
+                <td>
+                    <a
+                        href="{{ path('bill_edit', { 'id': bill.id }) }}"
+                        class="btn btn-default btn-sm"
+                    >
+                        <i class="fa fa-edit"></i>
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

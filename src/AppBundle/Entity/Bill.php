@@ -43,6 +43,13 @@ class Bill
     /**
      * @var string
      *
+     * @ORM\Column(name="name", type="string")
+     */
+    private $name;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="amount", type="decimal", precision=10, scale=2)
      */
     private $amount;
@@ -66,8 +73,7 @@ class Bill
      *
      * @ORM\Column(name="accountBalance", type="decimal", precision=10, scale=2)
      */
-    private $accountBalance;
-
+    private $accountBalance = 0.0;
 
     /**
      * Get id
@@ -233,10 +239,34 @@ class Bill
     /**
      * Get project
      *
-     * @return \AppBundle\Entity\Project 
+     * @return \AppBundle\Entity\Project
      */
     public function getProject()
     {
         return $this->project;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     *
+     * @return Bill
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
     }
 }
