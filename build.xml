@@ -49,7 +49,7 @@
         <apply executable="php" failonerror="true">
             <arg value="app/console" />
 
-            <arg value="twig:lint" />
+            <arg value="lint:twig" />
             <arg value="--env=test" />
 
             <fileset dir="${basedir}/app/Resources">
