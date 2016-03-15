@@ -122,4 +122,18 @@ class Admin implements UserInterface
     {
         return $this->email;
     }
+
+    /**
+     * Set password
+     *
+     * @param string $password
+     *
+     * @return Admin
+     */
+    public function setPassword($password)
+    {
+        $this->password = $password;
+
+        return $this;
+    }
 }

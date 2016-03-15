@@ -83,10 +83,15 @@ class Project
     /**
      * Get customer
      *
-     * @return \AppBundle\Entity\Customer 
+     * @return \AppBundle\Entity\Customer
      */
     public function getCustomer()
     {
         return $this->customer;
+    }
+
+    public function __toString()
+    {
+        return $this->getName() . ' (' . $this->getCustomer()->getName() . ')';
     }
 }
