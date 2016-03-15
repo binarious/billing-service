@@ -7,7 +7,7 @@ doctrine:
         connections:
             default:
                 driver:   pdo_sqlite
-                memory:   true
+                path:     %kernel.cache_dir%/test.db
 
 framework:
     test: ~
