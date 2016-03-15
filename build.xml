@@ -70,7 +70,6 @@
 
             <arg value="doctrine:database:drop" />
             <arg value="--force" />
-            <arg value="--if-exists" />
             <arg value="--env=test" />
         </exec>
 
