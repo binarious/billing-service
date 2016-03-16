@@ -44,6 +44,7 @@ class BillController extends Controller
     public function newAction(Request $request)
     {
         $bill = new Bill();
+        $bill->setDate(new \DateTime());
         $form = $this->createForm('AppBundle\Form\BillType', $bill, [
             'admin' => $this->getUser()->getId()
         ]);
