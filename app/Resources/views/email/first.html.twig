@@ -1,0 +1,7 @@
+{% extends 'email/baseMail.html.twig' %}
+
+{% block body %}
+    <p>Für Ihr Projekt <b>{{ bill.project.name }}</b> bei <b>{{ bill.project.customer.admin.name }}</b> konnte unser automatisiertes Zahlungssystem noch keinen Zahlungseingang für die Rechnung <b>{{ bill.name }}</b> vom <b>{{ bill.date|date('d.m.Y') }}</b> in Höhe von <b>{{ bill.amount|number_format(2, ',', '.') }} €</b> verzeichnen.</p>
+
+    <p>Bitte teilen Sie uns mit, ob Sie bereits gezahlt haben oder nehmen Sie die Überweisung vor.</p>
+{% endblock %}

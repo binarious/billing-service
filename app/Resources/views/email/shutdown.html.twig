@@ -1,0 +1,11 @@
+{% extends 'email/baseMail.html.twig' %}
+
+{% block subject %}
+    Abschaltung
+{% endblock %}
+
+{% block body %}
+    <p>Aufforderung zur Abschaltung des Systems <b>{{ bill.project.name }}</b>.</p>
+
+    <p><b>Grund:</b> Fehlende Zahlung der Rechnung <b>{{ bill.name }}</b> vom <b>{{ bill.date|date('d.m.Y') }}</b> in Höhe von <b>{{ bill.amount|number_format(2, ',', '.') }} €</b> bei <b>{{ bill.project.customer.admin.name }}</b>.
+{% endblock %}

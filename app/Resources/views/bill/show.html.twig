@@ -22,12 +22,12 @@
         <dd>{{ bill.deadlineDays }}</dd>
 
         <dt>Forderungsbetrag</dt>
-        <dd>{{ bill.amount|number_format(2, '.', ',') }} €</dd>
+        <dd>{{ bill.amount|number_format(2, ',', '.') }} €</dd>
 
         <dt>Erhaltene Erinnerungen</dt>
         <dd>{{ bill.receivedDuns }}</dd>
 
         <dt>Bisher bezahlt</dt>
-        <dd>{{ bill.accountBalance|number_format(2, '.', ',') }} €</dd>
+        <dd>{{ bill.accountBalance|number_format(2, ',', '.') }} €</dd>
     </dl>
 {% endblock %}

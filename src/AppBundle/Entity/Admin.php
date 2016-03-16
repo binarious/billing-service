@@ -91,6 +91,19 @@ class Admin implements UserInterface
     }
 
     /**
+     * Set password
+     *
+     * @param string $password
+     * @return Admin
+     */
+    public function setPassword($password)
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+
+    /**
      * Get name
      *
      * @return string
@@ -121,19 +134,5 @@ class Admin implements UserInterface
     public function getEmail()
     {
         return $this->email;
-    }
-
-    /**
-     * Set password
-     *
-     * @param string $password
-     *
-     * @return Admin
-     */
-    public function setPassword($password)
-    {
-        $this->password = $password;
-
-        return $this;
     }
 }

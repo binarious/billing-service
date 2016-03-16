@@ -7,7 +7,7 @@ doctrine:
         connections:
             default:
                 driver:   pdo_sqlite
-                memory:   true
+                path:     '%kernel.cache_dir%/data.sqlite'
 
 framework:
     test: ~
@@ -22,3 +22,10 @@ web_profiler:
 
 swiftmailer:
     disable_delivery: true
+
+monolog:
+    handlers:
+        main:
+            type:  stream
+            path:  %kernel.logs_dir%/%kernel.environment%.log
+            level: critical
