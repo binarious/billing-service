@@ -27,11 +27,17 @@
         <tbody>
         {% for bill in bills %}
             <tr>
-                <td><a href="{{ path('bill_edit', { 'id': bill.id }) }}">{{ bill.id }}</a></td>
+                <td><a href="{{ path('bill_show', { 'id': bill.id }) }}">{{ bill.id }}</a></td>
                 <td>{{ bill.project.name }}</td>
                 <td>{{ bill.project.customer.name }}</td>
                 <td>{{ bill.date|date('d.m.Y') }}</td>
                 <td>
+                    <a
+                        href="{{ path('bill_show', { 'id': bill.id }) }}"
+                        class="btn btn-default btn-sm"
+                    >
+                        <i class="fa fa-eye"></i>
+                    </a>
                     <a
                         href="{{ path('bill_edit', { 'id': bill.id }) }}"
                         class="btn btn-default btn-sm"

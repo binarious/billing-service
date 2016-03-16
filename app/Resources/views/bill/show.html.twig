@@ -2,7 +2,7 @@
 
 {% block body %}
     <h1 class="page-header">
-        Rechnung {{ bill.name }}
+        Rechnung {{ bill.name }} (#{{ bill.id }})
 
         <div class="pull-right">
             <a href="{{ path('bill_edit', {'id': bill.id}) }}" class="btn btn-primary">
@@ -11,23 +11,99 @@
         </div>
     </h1>
 
-    <dl class="dl-horizontal">
-        <dt>ID</dt>
-        <dd>{{ bill.id }}</dd>
+    <div class="row">
 
-        <dt>Rechnungsdatum</dt>
-        <dd>{{ bill.date|date('d.m.Y') }}</dd>
+        {% if bill.shutdownSince %}
+            <div class="col-lg-3 col-md-6">
+                {% set daysOff = date(date('now')).diff(date(bill.shutdownSince)).days %}
+                <div
+                    class="panel panel-red"
+                >
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <i class="fa fa-calendar fa-5x"></i>
+                            </div>
+                            <div class="col-xs-9 text-right">
+                                <div class="huge">{{ daysOff }}</div>
+                                <div>Tage offline</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
 
-        <dt>Zahlungsziel (in Tagen)</dt>
-        <dd>{{ bill.deadlineDays }}</dd>
+        <div class="col-lg-3 col-md-6">
+            <div
+                class="panel panel-{% if bill.accountBalance < bill.amount %}red{% else %}green{% endif %}"
+            >
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <i class="fa fa-money fa-5x"></i>
+                        </div>
+                        <div class="col-xs-9 text-right">
+                            <div class="huge">{{ bill.accountBalance|number_format(2, ',', '.') }}</div>
+                            <div>Bisher gezahlt</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-        <dt>Forderungsbetrag</dt>
-        <dd>{{ bill.amount|number_format(2, ',', '.') }} €</dd>
+        {% if bill.accountBalance < bill.amount %}
+            <div class="col-lg-3 col-md-6">
+                {% set daysUnpayed = date(date('now')).diff(date(bill.date)).days %}
+                <div
+                    class="panel panel-
+                        {%- if daysUnpayed > 28 -%}
+                            red
+                        {%- elseif daysUnpayed > 24 -%}
+                            yellow
+                        {%- else -%}
+                            default
+                        {%- endif -%}
+                    "
+                >
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <i class="fa fa-calendar fa-5x"></i>
+                            </div>
+                            <div class="col-xs-9 text-right">
+                                <div class="huge">{{ daysUnpayed }}</div>
+                                <div>Tage unbezahlt</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
 
-        <dt>Erhaltene Erinnerungen</dt>
-        <dd>{{ bill.receivedDuns }}</dd>
+    <div class="row">
+        <div class="col-lg-6 col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Allgemeine Rechnungsdaten
+                </div>
+                <div class="panel-body">
+                    <dl class="dl-horizontal">
+                        <dt>Rechnungsdatum</dt>
+                        <dd>{{ bill.date|date('d.m.Y') }}</dd>
 
-        <dt>Bisher bezahlt</dt>
-        <dd>{{ bill.accountBalance|number_format(2, ',', '.') }} €</dd>
-    </dl>
+                        <dt>Zahlungsziel (in Tagen)</dt>
+                        <dd>{{ bill.deadlineDays }}</dd>
+
+                        <dt>Forderungsbetrag</dt>
+                        <dd>{{ bill.amount|number_format(2, ',', '.') }} €</dd>
+
+                        <dt>Erhaltene Erinnerungen</dt>
+                        <dd>{{ bill.receivedDuns }}</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
