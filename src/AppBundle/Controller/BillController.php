@@ -26,7 +26,9 @@ class BillController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $bills = $em->getRepository('AppBundle:Bill')->findAll();
+        $bills = $em->getRepository('AppBundle:Bill')->findByAdmin(
+            $this->getUser()->getId()
+        );
 
         return $this->render('bill/index.html.twig', array(
             'bills' => $bills,

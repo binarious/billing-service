@@ -12,6 +12,18 @@ use Doctrine\ORM\EntityRepository;
  */
 class BillRepository extends EntityRepository
 {
+    public function findByAdmin($admin)
+    {
+        return $this
+            ->createQueryBuilder('b')
+            ->innerJoin('b.project', 'p')
+            ->innerJoin('p.customer', 'c')
+            ->where('c.admin = :admin')
+            ->getQuery()
+            ->setParameter('admin', $admin)
+            ->getResult();
+    }
+
     public function findShutdown($shutdownDeadline)
     {
         return $this
