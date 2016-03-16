@@ -131,7 +131,7 @@ class BillService
             ->setBcc($toCustomer ? $customer->getAdmin()->getEmail() : null)
             ->setBody(
                 $this->templating->render(
-                    'email/' . $template . '.html.twig',
+                    ':email:' . $template . '.html.twig',
                     [
                         'bill' => $bill,
                         'firstDunDeadline' => $this->firstDunDeadline,
