@@ -31,6 +31,11 @@ body {
     line-height: normal;
 }
 
+.bigger {
+    font-size: 25px;
+    line-height: 50px;
+}
+
 @media(min-width:768px) {
     #wrapper {
         padding-left: 225px;
