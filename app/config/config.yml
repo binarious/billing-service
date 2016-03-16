@@ -6,7 +6,10 @@ imports:
 # Put parameters here that don't need to change on each machine where the app is deployed
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
-    locale: en
+    locale: de
+    first_dun_deadline: 14
+    second_dun_deadline: 14
+    shutdown_deadline: 3
 
 framework:
     #esi:             ~
@@ -84,6 +87,11 @@ assetic:
             http_path:  /images
             http_generated_images_path: /images/compiled
             style: compressed
+
+jms_di_extra:
+    locations:
+        all_bundles: false
+        bundles: [AppBundle]
 
 sp_bower:
     assetic:

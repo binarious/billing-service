@@ -62,6 +62,13 @@ class Bill
     private $lastDun;
 
     /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="shutdownSince", type="date", nullable=true)
+     */
+    private $shutdownSince;
+
+    /**
      * @var int
      *
      * @ORM\Column(name="receivedDuns", type="integer", nullable=true)
@@ -268,5 +275,41 @@ class Bill
     public function getName()
     {
         return $this->name;
+    }
+
+    public function doDun()
+    {
+        $this->lastDun = new \DateTime();
+
+        if ($this->receivedDuns === null) {
+            $this->receivedDuns = 1;
+            return;
+        }
+
+        $this->receivedDuns++;
+    }
+
+    /**
+     * Set shutdownSince
+     *
+     * @param \DateTime $shutdownSince
+     *
+     * @return Bill
+     */
+    public function setShutdownSince($shutdownSince)
+    {
+        $this->shutdownSince = $shutdownSince;
+
+        return $this;
+    }
+
+    /**
+     * Get shutdownSince
+     *
+     * @return \DateTime
+     */
+    public function getShutdownSince()
+    {
+        return $this->shutdownSince;
     }
 }

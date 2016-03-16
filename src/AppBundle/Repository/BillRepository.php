@@ -12,4 +12,65 @@ use Doctrine\ORM\EntityRepository;
  */
 class BillRepository extends EntityRepository
 {
+    public function findShutdown($shutdownDeadline)
+    {
+        return $this
+            ->createQueryBuilder('b')
+            ->where(
+                'b.amount > b.accountBalance
+                AND
+                (
+                    b.receivedDuns = 3
+                    AND
+                    DATE_DIFF(CURRENT_DATE(), b.lastDun) > :shutdownDeadline
+                )'
+            )
+            ->getQuery()
+            ->setParameter('shutdownDeadline', $shutdownDeadline)
+            ->getResult();
+    }
+
+    public function findDue($firstDunDeadline, $secondDunDeadline, $shutdownDeadline)
+    {
+        return $this
+            ->createQueryBuilder('b')
+            ->where(
+                'b.amount > b.accountBalance
+                AND
+                b.shutdownSince IS NULL
+                AND
+                (
+                    (
+                        COALESCE(b.receivedDuns, 0) = 0
+                        AND
+                        DATE_DIFF(CURRENT_DATE(), b.date) > b.deadlineDays
+                    )
+                    OR
+                    (
+                        b.receivedDuns = 1
+                        AND
+                        DATE_DIFF(CURRENT_DATE(), b.lastDun) > :firstDunDeadline
+                    )
+                    OR
+                    (
+                        b.receivedDuns = 2
+                        AND
+                        DATE_DIFF(CURRENT_DATE(), b.lastDun) > :secondDunDeadline
+                    )
+                    OR
+                    (
+                        b.receivedDuns = 3
+                        AND
+                        DATE_DIFF(CURRENT_DATE(), b.lastDun) > :shutdownDeadline
+                    )
+                )'
+            )
+            ->getQuery()
+            ->setParameters([
+                'firstDunDeadline' => $firstDunDeadline,
+                'secondDunDeadline' => $secondDunDeadline,
+                'shutdownDeadline' => $shutdownDeadline
+            ])
+            ->getResult();
+    }
 }

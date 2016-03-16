@@ -20,4 +20,20 @@ class PageController extends Controller
     {
         return $this->render('page/index.html.twig', []);
     }
+
+    /**
+     * @Route("/test")
+     * @Method("GET")
+     */
+    public function testAction()
+    {
+        $bs = $this->get('bill_service');
+        $due = $bs->getDue();
+
+        foreach ($due as $d) {
+            $bs->dun($d);
+        }
+        
+        return $this->render('page/index.html.twig', []);
+    }
 }
