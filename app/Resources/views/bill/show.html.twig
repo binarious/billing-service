@@ -53,7 +53,7 @@
                             <i class="fa fa-money fa-5x"></i>
                         </div>
                         <div class="col-xs-9 text-right">
-                            <div class="huge">{{ bill.accountBalance|number_format(2, ',', '.') }}</div>
+                            <div class="bigger">{{ bill.accountBalance|number_format(2, ',', '.') }}</div>
                             <div>Bisher gezahlt</div>
                         </div>
                     </div>
@@ -123,7 +123,7 @@
                     </dl>
                 </div>
 
-                {% if not bill.shutdownSince %}
+                {% if bill.amount > bill.accountBalance and not bill.shutdownSince %}
                     <a class="list-group-item">
                         {{ bill|nextBillStep|raw }}
                     </a>
