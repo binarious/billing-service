@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Bill
@@ -22,6 +23,7 @@ class Bill
     private $id;
 
     /**
+     * @Assert\NotBlank()
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Project", inversedBy="bills")
      */
     private $project;
@@ -29,6 +31,8 @@ class Bill
     /**
      * @var \DateTime
      *
+     * @Assert\NotBlank()
+     * @Assert\Date()
      * @ORM\Column(name="date", type="date")
      */
     private $date;
@@ -36,6 +40,7 @@ class Bill
     /**
      * @var int
      *
+     * @Assert\NotBlank()
      * @ORM\Column(name="deadlineDays", type="integer")
      */
     private $deadlineDays;
@@ -43,6 +48,7 @@ class Bill
     /**
      * @var string
      *
+     * @Assert\NotBlank()
      * @ORM\Column(name="name", type="string")
      */
     private $name;
@@ -50,6 +56,7 @@ class Bill
     /**
      * @var string
      *
+     * @Assert\NotBlank()
      * @ORM\Column(name="amount", type="decimal", precision=10, scale=2)
      */
     private $amount;
