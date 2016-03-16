@@ -5,7 +5,16 @@
         Rechnung {{ bill.name }} (#{{ bill.id }})
 
         <div class="pull-right">
-            <a href="{{ path('bill_edit', {'id': bill.id}) }}" class="btn btn-primary">
+
+            {% if bill.accountBalance < bill.amount %}
+                {{ form_start(pay_form) }}
+                    <button type="submit" class="btn btn-primary confirm-submit">
+                        <i class="fa fa-check"></i> Als bezahlt markieren
+                    </button>
+                {{ form_end(pay_form) }}
+            {% endif %}
+
+            <a href="{{ path('bill_edit', {'id': bill.id}) }}" class="btn btn-default">
                 <i class="fa fa-edit"></i> Bearbeiten
             </a>
         </div>

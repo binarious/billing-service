@@ -99,6 +99,28 @@ class BillService
         $this->em->flush();
     }
 
+    /**
+     * Sets the bill as payed and send information mails to the customer and
+     * admin if a shutdown was announced previously.
+     *
+     * @param Bill $bill Bill entity
+     */
+    public function setPayed(Bill $bill)
+    {
+        $bill->setAccountBalance($bill->getAmount());
+        $this->em->persist($bill);
+        $this->em->flush();
+
+        $projectName = $bill->getProject()->getName();
+        if ($bill->getReceivedDuns() === 3) {
+            $this->sendEmail('regeneration', 'Zahlung erhalten: ' . $projectName, $bill);
+
+            if ($bill->getShutdownSince()) {
+                $this->sendEmail('startup', 'Anschaltung: ' . $projectName, $bill, false);
+            }
+        }
+    }
+
     private function sendEmail($template, $subject, Bill $bill, $toCustomer = true)
     {
         $customer = $bill->getProject()->getCustomer();

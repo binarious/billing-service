@@ -7,3 +7,7 @@ $brand-primary: #509765;
 @import "../../public/bower_components/font-awesome/scss/font-awesome.scss";
 
 @import "sb-admin";
+
+.pull-right form {
+    display: inline-block;
+}

@@ -77,10 +77,12 @@ class BillController extends Controller
         }
 
         $deleteForm = $this->createDeleteForm($bill);
+        $payForm = $this->createPayForm($bill);
 
         return $this->render('bill/show.html.twig', array(
             'bill' => $bill,
             'delete_form' => $deleteForm->createView(),
+            'pay_form' => $payForm->createView(),
         ));
     }
 
@@ -109,7 +111,7 @@ class BillController extends Controller
             $em->persist($bill);
             $em->flush();
 
-            return $this->redirectToRoute('bill_edit', array('id' => $bill->getId()));
+            return $this->redirectToRoute('bill_show', array('id' => $bill->getId()));
         }
 
         return $this->render('bill/edit.html.twig', array(
@@ -145,6 +147,30 @@ class BillController extends Controller
     }
 
     /**
+     * Deletes a Bill entity.
+     *
+     * @Route("/{id}", name="bill_pay")
+     * @Method("POST")
+     */
+    public function payAction(Request $request, Bill $bill)
+    {
+        if ($bill->getProject()->getCustomer()->getAdmin()->getId()
+                !== $this->getUser()->getId() ||
+            $bill->getAccountBalance() === $bill->getAmount()) {
+            throw $this->createNotFoundException();
+        }
+
+        $form = $this->createPayForm($bill);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->get('bill_service')->setPayed($bill);
+        }
+
+        return $this->redirectToRoute('bill_show', ['id' => $bill->getId()]);
+    }
+
+    /**
      * Creates a form to delete a Bill entity.
      *
      * @param Bill $bill The Bill entity
@@ -156,6 +182,22 @@ class BillController extends Controller
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('bill_delete', array('id' => $bill->getId())))
             ->setMethod('DELETE')
+            ->getForm()
+        ;
+    }
+
+    /**
+     * Creates a form to pay a Bill entity.
+     *
+     * @param Bill $bill The Bill entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createPayForm(Bill $bill)
+    {
+        return $this->createFormBuilder()
+            ->setAction($this->generateUrl('bill_pay', array('id' => $bill->getId())))
+            ->setMethod('POST')
             ->getForm()
         ;
     }

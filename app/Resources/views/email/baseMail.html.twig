@@ -315,7 +315,8 @@
                                         <tr>
                                             <td valign="top">
                                                 <div mc:edit="std_preheader_content">
-                                                     <b>{{ bill.project.customer.name }}</b> - Wir vermissen Ihre Zahlung
+                                                     <b>{{ bill.project.customer.name }}</b> -
+                                                     {% block smallHeadline %}Wir vermissen Ihre Zahlung{% endblock %}
                                                 </div>
                                             </td>
                                             <!-- *|END:IF|* -->
