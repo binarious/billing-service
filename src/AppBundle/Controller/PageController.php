@@ -18,7 +18,37 @@ class PageController extends Controller
      */
     public function indexAction()
     {
-        return $this->render('page/index.html.twig', []);
+        $em = $this->getDoctrine()->getManager();
+
+        $allBills = $em->getRepository('AppBundle:Bill')->findByAdmin(
+            $this->getUser()->getId()
+        );
+        $unpayed = $em->getRepository('AppBundle:Bill')->findUnpayedByAdmin(
+            $this->getUser()->getId()
+        );
+        $offline = $em->getRepository('AppBundle:Bill')->findOfflineByAdmin(
+            $this->getUser()->getId()
+        );
+
+        $cntAll = count($allBills);
+        $cntOff = count($offline);
+        $sumAmt = 0;
+        $sumDun = 0;
+
+        foreach ($allBills as $bill) {
+            $sumDun += $bill->getReceivedDuns();
+            $sumAmt += $bill->getAmount();
+        }
+
+        return $this->render('page/index.html.twig', [
+            'allBills' => $allBills,
+            'unpayed' => $unpayed,
+            'offline' => $offline,
+            'cntAll' => $cntAll,
+            'cntOff' => $cntOff,
+            'sumAmt' => $sumAmt,
+            'sumDun' => $sumDun
+        ]);
     }
 
     /**
@@ -33,7 +63,7 @@ class PageController extends Controller
         foreach ($due as $d) {
             $bs->dun($d);
         }
-        
+
         return $this->render('page/index.html.twig', []);
     }
 }
