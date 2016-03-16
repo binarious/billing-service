@@ -12,6 +12,32 @@ use Doctrine\ORM\EntityRepository;
  */
 class BillRepository extends EntityRepository
 {
+    public function findUnpayedByAdmin($admin)
+    {
+        return $this
+            ->createQueryBuilder('b')
+            ->innerJoin('b.project', 'p')
+            ->innerJoin('p.customer', 'c')
+            ->where('c.admin = :admin AND b.amount > b.accountBalance')
+            ->orderBy('b.date')
+            ->getQuery()
+            ->setParameter('admin', $admin)
+            ->getResult();
+    }
+
+    public function findOfflineByAdmin($admin)
+    {
+        return $this
+            ->createQueryBuilder('b')
+            ->innerJoin('b.project', 'p')
+            ->innerJoin('p.customer', 'c')
+            ->where('c.admin = :admin AND b.shutdownSince IS NOT NULL')
+            ->orderBy('b.date')
+            ->getQuery()
+            ->setParameter('admin', $admin)
+            ->getResult();
+    }
+
     public function findByAdmin($admin)
     {
         return $this

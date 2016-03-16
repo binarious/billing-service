@@ -99,6 +99,16 @@
                 </div>
                 <div class="panel-body">
                     <dl class="dl-horizontal">
+                        <dt>Projekt</dt>
+                        <dd>
+                            <a href="{{ path('project_edit', {'id': bill.project.id}) }}">
+                                {{ bill.project.name }}
+                            </a> von Kunde
+                            <a href="{{ path('customer_edit', {'id': bill.project.customer.id}) }}">
+                                {{ bill.project.customer.name }}
+                            </a>
+                        </dd>
+
                         <dt>Rechnungsdatum</dt>
                         <dd>{{ bill.date|date('d.m.Y') }}</dd>
 
@@ -112,6 +122,12 @@
                         <dd>{{ bill.receivedDuns }}</dd>
                     </dl>
                 </div>
+
+                {% if not bill.shutdownSince %}
+                    <a class="list-group-item">
+                        {{ bill|nextBillStep|raw }}
+                    </a>
+                {% endif %}
             </div>
         </div>
     </div>
