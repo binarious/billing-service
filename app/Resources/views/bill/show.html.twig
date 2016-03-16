@@ -68,7 +68,7 @@
                     class="panel panel-
                         {%- if daysUnpayed > 28 -%}
                             red
-                        {%- elseif daysUnpayed > 14 -%}
+                        {%- elseif daysUnpayed > bill.deadlineDays -%}
                             yellow
                         {%- else -%}
                             default
