@@ -18,7 +18,7 @@ class Version20160316093513 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE bill ADD name VARCHAR(255) NOT NULL, ADD shutdownSince DATE DEFAULT NULL');
+        $this->addSql('ALTER TABLE bill ADD shutdownSince DATE DEFAULT NULL');
     }
 
     /**
@@ -29,6 +29,6 @@ class Version20160316093513 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE bill DROP name, DROP shutdownSince');
+        $this->addSql('ALTER TABLE bill DROP shutdownSince');
     }
 }
