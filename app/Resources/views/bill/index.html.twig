@@ -18,6 +18,7 @@
         <thead>
             <tr>
                 <th>ID</th>
+                <th>Nummer</th>
                 <th>Projekt</th>
                 <th>Kunde</th>
                 <th>Datum</th>
@@ -28,6 +29,7 @@
         {% for bill in bills %}
             <tr>
                 <td><a href="{{ path('bill_show', { 'id': bill.id }) }}">{{ bill.id }}</a></td>
+                <td>{{ bill.name }}</td>
                 <td>{{ bill.project.name }}</td>
                 <td>{{ bill.project.customer.name }}</td>
                 <td>{{ bill.date|date('d.m.Y') }}</td>
