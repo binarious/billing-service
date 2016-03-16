@@ -118,8 +118,15 @@
                         <dt>Forderungsbetrag</dt>
                         <dd>{{ bill.amount|number_format(2, ',', '.') }} €</dd>
 
-                        <dt>Erhaltene Erinnerungen</dt>
-                        <dd>{{ bill.receivedDuns }}</dd>
+                        {% if bill.receivedDuns %}
+                            <dt>Erhaltene Erinnerungen</dt>
+                            <dd>{{ bill.receivedDuns }}</dd>
+                        {% endif %}
+
+                        {% if bill.lastDun %}
+                            <dt>Letzte Erinnerungen</dt>
+                            <dd>{{ bill.lastDun|date('d.m.Y') }}</dd>
+                        {% endif %}
                     </dl>
                 </div>
 
