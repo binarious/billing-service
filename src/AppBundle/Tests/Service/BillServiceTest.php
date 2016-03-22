@@ -164,7 +164,7 @@ class BillServiceTest extends KernelTestCase
     {
         $this->resetBill();
         $this->testData['bill']->setReceivedDuns(3);
-        $this->testData['bill']->setLastDun(new \DateTime('-4 days'));
+        $this->testData['bill']->setLastDun(new \DateTime('-6 days'));
         $this->em->persist($this->testData['bill']);
         $this->em->flush();
 
@@ -173,7 +173,7 @@ class BillServiceTest extends KernelTestCase
         $this->assertEquals(count($due), 1);
 
         $bill = $due[0];
-        $bill->setLastDun(new \DateTime('-3 days'));
+        $bill->setLastDun(new \DateTime('-5 days'));
         $this->em->persist($bill);
         $this->em->flush();
 
@@ -181,7 +181,7 @@ class BillServiceTest extends KernelTestCase
         $this->assertEquals(count($due), 0);
 
         // checking account balance consideration
-        $bill->setLastDun(new \DateTime('-4 day'));
+        $bill->setLastDun(new \DateTime('-6 day'));
         $bill->setAccountBalance($bill->getAmount());
         $this->em->persist($bill);
         $this->em->flush();
@@ -190,7 +190,7 @@ class BillServiceTest extends KernelTestCase
         $this->assertEquals(count($due), 0);
 
         // checking shutdown information consideration
-        $bill->setLastDun(new \DateTime('-4 day'));
+        $bill->setLastDun(new \DateTime('-6 day'));
         $bill->setAccountBalance(0);
         $bill->setShutdownSince(new \DateTime());
         $this->em->persist($bill);
@@ -209,7 +209,7 @@ class BillServiceTest extends KernelTestCase
         $this->service->dun($this->testData['bill']);
         $this->assertEquals($this->testData['bill']->getReceivedDuns(), 1);
         $this->assertEquals(
-            $this->testData['bill']->getLastDun()->format('d.m.Y'), 
+            $this->testData['bill']->getLastDun()->format('d.m.Y'),
             $today->format('d.m.Y')
         );
         $this->assertNull($this->testData['bill']->getShutdownSince());
@@ -218,7 +218,7 @@ class BillServiceTest extends KernelTestCase
         $this->service->dun($this->testData['bill']);
         $this->assertEquals($this->testData['bill']->getReceivedDuns(), 2);
         $this->assertEquals(
-            $this->testData['bill']->getLastDun()->format('d.m.Y'), 
+            $this->testData['bill']->getLastDun()->format('d.m.Y'),
             $today->format('d.m.Y')
         );
         $this->assertNull($this->testData['bill']->getShutdownSince());
@@ -227,7 +227,7 @@ class BillServiceTest extends KernelTestCase
         $this->service->dun($this->testData['bill']);
         $this->assertEquals($this->testData['bill']->getReceivedDuns(), 3);
         $this->assertEquals(
-            $this->testData['bill']->getLastDun()->format('d.m.Y'), 
+            $this->testData['bill']->getLastDun()->format('d.m.Y'),
             $today->format('d.m.Y')
         );
         $this->assertNull($this->testData['bill']->getShutdownSince());
@@ -236,11 +236,11 @@ class BillServiceTest extends KernelTestCase
         $this->service->dun($this->testData['bill']);
         $this->assertEquals($this->testData['bill']->getReceivedDuns(), 3);
         $this->assertEquals(
-            $this->testData['bill']->getLastDun()->format('d.m.Y'), 
+            $this->testData['bill']->getLastDun()->format('d.m.Y'),
             $today->format('d.m.Y')
         );
         $this->assertEquals(
-            $this->testData['bill']->getShutdownSince()->format('d.m.Y'), 
+            $this->testData['bill']->getShutdownSince()->format('d.m.Y'),
             $today->format('d.m.Y')
         );
 
@@ -248,11 +248,11 @@ class BillServiceTest extends KernelTestCase
         $this->service->dun($this->testData['bill']);
         $this->assertEquals($this->testData['bill']->getReceivedDuns(), 3);
         $this->assertEquals(
-            $this->testData['bill']->getLastDun()->format('d.m.Y'), 
+            $this->testData['bill']->getLastDun()->format('d.m.Y'),
             $today->format('d.m.Y')
         );
         $this->assertEquals(
-            $this->testData['bill']->getShutdownSince()->format('d.m.Y'), 
+            $this->testData['bill']->getShutdownSince()->format('d.m.Y'),
             $today->format('d.m.Y')
         );
     }
