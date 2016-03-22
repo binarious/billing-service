@@ -7,7 +7,7 @@
 {% block body %}
     <p>Ihr System wird in <b>{{ shutdownDeadline }}</b> Tagen heruntergefahren!</p>
 
-    <p>Auch nach unserer letzten Zahlungserinnerung vom <b>{{ bill.lastDun|date('d.m.Y') }}</b> konnten unser automatisiertes Zahlungssysten noch keinen Zahlungseingang für Ihr Projekt <b>{{ bill.project.name }}</b> bei <b>{{ bill.project.customer.admin.name }}</b> für die Rechnung <b>{{ bill.name }}</b> vom <b>{{ bill.date|date('d.m.Y') }}</b> in Höhe von <b>{{ bill.amount|number_format(2, ',', '.') }} €</b> verzeichnen.</p>
+    <p>Auch nach unserer letzten Zahlungserinnerung vom <b>{{ bill.lastDun|date('d.m.Y') }}</b> konnten unser automatisiertes Zahlungssystem noch keinen Zahlungseingang für Ihr Projekt <b>{{ bill.project.name }}</b> bei <b>{{ bill.project.customer.admin.name }}</b> für die Rechnung <b>{{ bill.name }}</b> vom <b>{{ bill.date|date('d.m.Y') }}</b> in Höhe von <b>{{ bill.amount|number_format(2, ',', '.') }} €</b> verzeichnen.</p>
 
     <p>Bitte überweisen Sie den Betrag umgehend, um eine Abschaltung zu verhindern.</p>
 {% endblock %}
