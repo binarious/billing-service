@@ -9,7 +9,7 @@ parameters:
     locale: de
     first_dun_deadline: 14
     second_dun_deadline: 14
-    shutdown_deadline: 3
+    shutdown_deadline: 5
 
 framework:
     #esi:             ~
