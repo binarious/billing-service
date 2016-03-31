@@ -6,7 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-
+use Symfony\Component\Form\FormError;
 /**
  * Page controller.
  */
@@ -49,6 +49,46 @@ class PageController extends Controller
             'sumAmt' => $sumAmt,
             'sumDun' => $sumDun
         ]);
+    }
+
+     /**
+     * Route for changing the admin password
+     *
+     * @Route("/change-password", name="change_password")
+     * @Method({"GET", "POST"})
+     */
+    public function changePasswordAction(Request $request)
+    {
+        $form = $this->createForm('AppBundle\Form\ChangePasswordType');
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $emAdmin = $em->getRepository('AppBundle:Admin')->find(
+                $this->getUser()->getId()
+            );
+
+            if ($this->get('security.password_encoder')
+                ->isPasswordValid($emAdmin, $form->getData()['currentPassword'])) {
+                $hash = $this->get('security.password_encoder')
+                             ->encodePassword($emAdmin, $form->getData()['newPassword']);
+
+                $emAdmin->setPassword($hash);
+
+                $em->persist($emAdmin);
+                $em->flush();
+
+                return $this->redirectToRoute('homepage');
+            }
+
+            $form->get('currentPassword')->addError(
+                new FormError('Das aktuelle Passwort ist ungültig.')
+            );
+        }
+
+        return $this->render('page/changePassword.html.twig', array(
+            'form' => $form->createView()
+        ));
     }
 
     /**

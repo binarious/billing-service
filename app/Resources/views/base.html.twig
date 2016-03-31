@@ -48,6 +48,9 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> {{ app.user.name }} <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li>
+                            <a href="{{ path('change_password') }}">
+                                <i class="fa fa-fw fa-lock"></i> Passwort ändern
+                            </a>
                             <a href="#"><i class="fa fa-fw fa-power-off"></i> Logout</a>
                         </li>
                     </ul>
