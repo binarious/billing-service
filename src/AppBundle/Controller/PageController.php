@@ -26,12 +26,17 @@ class PageController extends Controller
         $unpayed = $em->getRepository('AppBundle:Bill')->findUnpayedByAdmin(
             $this->getUser()->getId()
         );
+        $lastStep = $em->getRepository('AppBundle:Bill')->findLaststepByAdmin(
+            $this->container->getParameter('laststep_deadline'),
+            $this->getUser()->getId()
+        );
         $offline = $em->getRepository('AppBundle:Bill')->findOfflineByAdmin(
             $this->getUser()->getId()
         );
 
         $cntAll = count($allBills);
         $cntOff = count($offline);
+        $cntLast = count($lastStep);
         $sumAmt = 0;
         $sumDun = 0;
 
@@ -44,8 +49,10 @@ class PageController extends Controller
             'allBills' => $allBills,
             'unpayed' => $unpayed,
             'offline' => $offline,
+            'lastStep' => $lastStep,
             'cntAll' => $cntAll,
             'cntOff' => $cntOff,
+            'cntLast' => $cntLast,
             'sumAmt' => $sumAmt,
             'sumDun' => $sumDun
         ]);
@@ -64,6 +71,6 @@ class PageController extends Controller
             $bs->dun($d);
         }
 
-        return $this->render('page/index.html.twig', []);
+        return $this->redirectToRoute('homepage');
     }
 }

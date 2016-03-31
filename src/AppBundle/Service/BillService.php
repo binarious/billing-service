@@ -38,9 +38,9 @@ class BillService
     public $secondDunDeadline;
 
     /**
-     * @Inject("%shutdown_deadline%")
+     * @Inject("%laststep_deadline%")
      */
-    public $shutdownDeadline;
+    public $laststepDeadline;
 
     /**
      * @Inject("%sender_address%")
@@ -56,7 +56,7 @@ class BillService
         return $this->em->getRepository('AppBundle:Bill')->findDue(
             $this->firstDunDeadline,
             $this->secondDunDeadline,
-            $this->shutdownDeadline
+            $this->laststepDeadline
         );
     }
 
@@ -66,11 +66,6 @@ class BillService
      */
     public function dun(Bill $bill)
     {
-        // skip if already shut down
-        if ($bill->getShutdownSince()) {
-            return;
-        }
-
         $projectName = $bill->getProject()->getName();
         switch ($bill->getReceivedDuns()) {
             // do first dun
@@ -80,18 +75,13 @@ class BillService
                 break;
             // do second dun
             case 1:
-                $this->sendEmail('second', 'Zweite Zahlungserinnerung: ' . $projectName, $bill);
+                $this->sendEmail('second', 'Erste Mahnung: ' . $projectName, $bill);
                 $bill->doDun();
                 break;
             // do last dun
             case 2:
-                $this->sendEmail('third', 'Warnung Abschaltung: ' . $projectName, $bill);
+                $this->sendEmail('third', 'Letzte Mahnung: ' . $projectName, $bill);
                 $bill->doDun();
-                break;
-            // do shutdown
-            case 3:
-                $this->sendEmail('shutdown', 'Abschaltung: ' . $projectName, $bill, false);
-                $bill->setShutdownSince(new \DateTime());
                 break;
         }
 
@@ -136,7 +126,7 @@ class BillService
                         'bill' => $bill,
                         'firstDunDeadline' => $this->firstDunDeadline,
                         'secondDunDeadline' => $this->secondDunDeadline,
-                        'shutdownDeadline' => $this->shutdownDeadline,
+                        'laststepDeadline' => $this->laststepDeadline,
                     ]
                 ),
                 'text/html'

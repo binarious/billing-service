@@ -25,7 +25,7 @@ class BillServiceTest extends KernelTestCase
         $this->dunTimes = [
             $container->getParameter('first_dun_deadline'),
             $container->getParameter('second_dun_deadline'),
-            $container->getParameter('shutdown_deadline'),
+            $container->getParameter('laststep_deadline'),
         ];
 
         $this->testData['admin'] = new Admin();
@@ -232,28 +232,15 @@ class BillServiceTest extends KernelTestCase
         );
         $this->assertNull($this->testData['bill']->getShutdownSince());
 
-        // shutdown dun
+        // no automatic shutdown dun
         $this->service->dun($this->testData['bill']);
         $this->assertEquals($this->testData['bill']->getReceivedDuns(), 3);
         $this->assertEquals(
             $this->testData['bill']->getLastDun()->format('d.m.Y'),
             $today->format('d.m.Y')
         );
-        $this->assertEquals(
-            $this->testData['bill']->getShutdownSince()->format('d.m.Y'),
-            $today->format('d.m.Y')
-        );
-
-        // try again
-        $this->service->dun($this->testData['bill']);
-        $this->assertEquals($this->testData['bill']->getReceivedDuns(), 3);
-        $this->assertEquals(
-            $this->testData['bill']->getLastDun()->format('d.m.Y'),
-            $today->format('d.m.Y')
-        );
-        $this->assertEquals(
-            $this->testData['bill']->getShutdownSince()->format('d.m.Y'),
-            $today->format('d.m.Y')
+        $this->assertNull(
+            $this->testData['bill']->getShutdownSince()
         );
     }
 }

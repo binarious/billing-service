@@ -62,11 +62,11 @@
                 <div class="panel-heading">
                     <div class="row">
                         <div class="col-xs-3">
-                            <i class="fa fa-power-off fa-5x"></i>
+                            <i class="fa fa-flash fa-5x"></i>
                         </div>
                         <div class="col-xs-9 text-right">
-                            <div class="huge">{{ cntOff }}</div>
-                            <div>Systeme offline</div>
+                            <div class="huge">{{ cntLast }}</div>
+                            <div>Maßnahmen erforderlich</div>
                         </div>
                     </div>
                 </div>
@@ -127,9 +127,10 @@
                 <div class="panel-body">
                     <div class="list-group">
                         {% for bill in unpayed %}
-                            {% if not bill.shutdownSince %}
+                            {% set value = bill|nextBillStep %}
+                            {% if value %}
                                 <a href="{{ path('bill_show', {'id': bill.id}) }}" class="list-group-item">
-                                    {{ bill|nextBillStep|raw }}
+                                    {{ value|raw }}
                                 </a>
                             {% endif %}
                         {% endfor %}
@@ -140,27 +141,29 @@
         <div class="col-lg-4">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h3 class="panel-title"><i class="fa fa-power-off fa-fw"></i> Offlinesysteme</h3>
+                    <h3 class="panel-title"><i class="fa fa-flash fa-fw"></i> Maßnahmen erforderlich</h3>
                 </div>
                 <div class="panel-body">
-                    {% if offline|length > 0 %}
+                    {% if lastStep|length > 0 %}
                         <div class="table-responsive">
                             <table class="table table-bordered table-hover table-striped">
                                 <thead>
                                     <tr>
-                                        <th>System</th>
-                                        <th>Seit</th>
+                                        <th>Nr.</th>
+                                        <th>Datum</th>
+                                        <th>Forderung</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {% for bill in offline %}
+                                    {% for bill in lastStep %}
                                         <tr>
                                             <td>
                                                 <a href="{{ path('bill_show', {'id': bill.id}) }}">
-                                                    {{ bill.project.name }}
+                                                    {{ bill.name }}
                                                 </a>
                                             </td>
-                                            <td>{{ bill.shutdownSince|date('d.m.Y') }}</td>
+                                            <td>{{ bill.date|date('d.m.Y') }}</td>
+                                            <td>{{ bill.amount|number_format(2, ',', '.') }}</td>
                                         </tr>
                                     {% endfor %}
                                 </tbody>
