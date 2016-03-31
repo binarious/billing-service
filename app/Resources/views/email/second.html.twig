@@ -1,13 +1,13 @@
 {% extends 'email/baseMail.html.twig' %}
 
 {% block subject %}
-    Zweite Zahlungserinnerung
+    1. Mahnung
 {% endblock %}
 
 {% block body %}
-    <p>Auch nach unserer letzten Zahlungserinnerung vom <b>{{ bill.lastDun|date('d.m.Y') }}</b> konnte unser automatisiertes Zahlungssystem noch keinen Zahlungseingang für Ihr Projekt <b>{{ bill.project.name }}</b> bei <b>{{ bill.project.customer.admin.name }}</b> für die Rechnung <b>{{ bill.name }}</b> vom <b>{{ bill.date|date('d.m.Y') }}</b> in Höhe von <b>{{ bill.amount|number_format(2, ',', '.') }} €</b> verzeichnen.</p>
+    <p>Auch nach unserer Zahlungserinnerung vom <b>{{ bill.lastDun|date('d.m.Y') }}</b> konnte unser automatisiertes Zahlungssystem noch keinen Zahlungseingang für Ihr Projekt <b>{{ bill.project.name }}</b> bei <b>{{ bill.project.customer.admin.name }}</b> für die Rechnung <b>{{ bill.name }}</b> vom <b>{{ bill.date|date('d.m.Y') }}</b> in Höhe von <b>{{ bill.amount|number_format(2, ',', '.') }} €</b> verzeichnen.</p>
+
+    <p>Insofern möchten wir Sie nun daran erinnern, dass Sie entsprechend BGB § 288 Abs. 2 i. V. m. § 247 in Verzug geraten.</p>
 
     <p>Bitte teilen Sie uns mit, ob Sie bereits gezahlt haben oder nehmen Sie die Überweisung vor.</p>
-
-    <p>Sollte unser Zahlungssystem innerhalb der nächsten <b>{{ secondDunDeadline }} Tage</b> weiterhin keinen Zahlungseingang verzeichnen, wird Ihr System automatisch heruntergefahren, bis ein Zahlungseingang registriert werden konnte.</p>
 {% endblock %}

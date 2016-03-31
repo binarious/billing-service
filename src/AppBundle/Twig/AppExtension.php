@@ -25,9 +25,9 @@ class AppExtension extends \Twig_Extension
     public $secondDunDeadline;
 
     /**
-     * @Inject("%shutdown_deadline%")
+     * @Inject("%laststep_deadline%")
      */
-    public $shutdownDeadline;
+    public $laststepDeadline;
 
     public function getFilters()
     {
@@ -49,32 +49,37 @@ class AppExtension extends \Twig_Extension
 
         switch($bill->getReceivedDuns()) {
             case null:
-                $action = 'Erste Zahlungserinnerung';
+                $action = 'Zahlungserinnerung';
                 $icon = 'comment';
                 $when = (int) $today->diff(
                     $bill->getDate()->modify('+' . $bill->getDeadlineDays() . ' days')
                 )->format("%r%a");
                 break;
             case 1:
-                $action = 'Zweite Zahlungserinnerung';
+                $action = 'Erste Mahnung';
                 $icon = 'comment';
                 $when = (int) $today->diff(
                     $bill->getLastDun()->modify('+' . $this->firstDunDeadline . ' days')
                 )->format("%r%a");
                 break;
             case 2:
-                $action = 'Warnung vor Abschaltung';
+                $action = 'Letzte Mahnung';
                 $icon = 'exclamation-triangle';
                 $when = (int) $today->diff(
                     $bill->getLastDun()->modify('+' . $this->secondDunDeadline . ' days')
                 )->format("%r%a");
                 break;
             case 3:
-                $action = 'Abschaltung';
-                $icon = 'power-off';
+                $action = 'Weitere Maßnahmen';
+                $icon = 'flash';
                 $when = (int) $today->diff(
-                    $bill->getLastDun()->modify('+' . $this->shutdownDeadline . ' days')
+                    $bill->getLastDun()->modify('+' . $this->laststepDeadline . ' days')
                 )->format("%r%a");
+
+                if ($when < 0) {
+                    return;
+                }
+
                 break;
         }
 

@@ -50,7 +50,30 @@ class BillRepository extends EntityRepository
             ->getResult();
     }
 
-    public function findShutdown($shutdownDeadline)
+    public function findLaststepByAdmin($laststepDeadline, $admin)
+    {
+        return $this
+            ->createQueryBuilder('b')
+            ->innerJoin('b.project', 'p')
+            ->innerJoin('p.customer', 'c')
+            ->where(
+                'b.amount > b.accountBalance
+                AND
+                c.admin = :admin
+                AND
+                (
+                    b.receivedDuns = 3
+                    AND
+                    DATE_DIFF(CURRENT_DATE(), b.lastDun) > :laststepDeadline
+                )'
+            )
+            ->getQuery()
+            ->setParameter('laststepDeadline', $laststepDeadline)
+            ->setParameter('admin', $admin)
+            ->getResult();
+    }
+
+    public function findLaststep($laststepDeadline)
     {
         return $this
             ->createQueryBuilder('b')
@@ -60,15 +83,15 @@ class BillRepository extends EntityRepository
                 (
                     b.receivedDuns = 3
                     AND
-                    DATE_DIFF(CURRENT_DATE(), b.lastDun) > :shutdownDeadline
+                    DATE_DIFF(CURRENT_DATE(), b.lastDun) > :laststepDeadline
                 )'
             )
             ->getQuery()
-            ->setParameter('shutdownDeadline', $shutdownDeadline)
+            ->setParameter('laststepDeadline', $laststepDeadline)
             ->getResult();
     }
 
-    public function findDue($firstDunDeadline, $secondDunDeadline, $shutdownDeadline)
+    public function findDue($firstDunDeadline, $secondDunDeadline, $laststepDeadline)
     {
         return $this
             ->createQueryBuilder('b')
@@ -99,7 +122,7 @@ class BillRepository extends EntityRepository
                     (
                         b.receivedDuns = 3
                         AND
-                        DATE_DIFF(CURRENT_DATE(), b.lastDun) > :shutdownDeadline
+                        DATE_DIFF(CURRENT_DATE(), b.lastDun) > :laststepDeadline
                     )
                 )'
             )
@@ -107,7 +130,7 @@ class BillRepository extends EntityRepository
             ->setParameters([
                 'firstDunDeadline' => $firstDunDeadline,
                 'secondDunDeadline' => $secondDunDeadline,
-                'shutdownDeadline' => $shutdownDeadline
+                'laststepDeadline' => $laststepDeadline
             ])
             ->getResult();
     }

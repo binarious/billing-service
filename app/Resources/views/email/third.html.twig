@@ -1,13 +1,21 @@
 {% extends 'email/baseMail.html.twig' %}
 
 {% block subject %}
-    Abschaltungswarnung
+    Letzte Mahnung
 {% endblock %}
 
 {% block body %}
-    <p>Ihr System wird in <b>{{ shutdownDeadline }}</b> Tagen heruntergefahren!</p>
+    <p>Auch nach unserer letzten Mahnung vom <b>{{ bill.lastDun|date('d.m.Y') }}</b> konnte unser automatisiertes Zahlungssystem noch keinen Zahlungseingang für Ihr Projekt <b>{{ bill.project.name }}</b> bei <b>{{ bill.project.customer.admin.name }}</b> für die Rechnung <b>{{ bill.name }}</b> vom <b>{{ bill.date|date('d.m.Y') }}</b> in Höhe von <b>{{ bill.amount|number_format(2, ',', '.') }} €</b> verzeichnen.</p>
 
-    <p>Auch nach unserer letzten Zahlungserinnerung vom <b>{{ bill.lastDun|date('d.m.Y') }}</b> konnten unser automatisiertes Zahlungssystem noch keinen Zahlungseingang für Ihr Projekt <b>{{ bill.project.name }}</b> bei <b>{{ bill.project.customer.admin.name }}</b> für die Rechnung <b>{{ bill.name }}</b> vom <b>{{ bill.date|date('d.m.Y') }}</b> in Höhe von <b>{{ bill.amount|number_format(2, ',', '.') }} €</b> verzeichnen.</p>
+    <p>Insofern möchten wir Sie nun letztmalig daran erinnern, dass Sie entsprechend BGB § 288 Abs. 2 i. V. m. § 247 in Verzug geraten.</p>
 
-    <p>Bitte überweisen Sie den Betrag umgehend, um eine Abschaltung zu verhindern.</p>
+    <p>Bitte teilen Sie uns mit, ob Sie bereits gezahlt haben oder nehmen Sie die Überweisung vor.</p>
+
+    <p>Sollte unser Zahlungssystem innerhalb der nächsten <b>{{ laststepDeadline }} Tage</b> weiterhin keinen Zahlungseingang verzeichnen, sehen wir uns gezwungen weitere Maßnahmen einzuleiten. Diese können je nach Auftrag folgende sein:</p>
+
+    <ul>
+        <li>Systemabschaltung bis zum Zahlungseingang</li>
+        <li>Verlangen von Verzugszinsen i. H. v. Basiszinssatz + 9 % (gem BGB § 288)</li>
+        <li>Vollstreckung</li>
+    </ul>
 {% endblock %}
