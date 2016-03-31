@@ -75,7 +75,7 @@ class BillService
                 break;
             // do second dun
             case 1:
-                $this->sendEmail('second', 'Erste Mahnung: ' . $projectName, $bill);
+                $this->sendEmail('second', 'Mahnung: ' . $projectName, $bill);
                 $bill->doDun();
                 break;
             // do last dun
