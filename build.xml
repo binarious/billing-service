@@ -32,6 +32,12 @@
         Build geändert haben.
     -->
     <target name="lint" description="Perform syntax check of sourcecode files">
+        <exec executable="php" failonerror="true" taskname="">
+            <arg value="app/console" />
+            <arg value="security:check" />
+            <arg value="--ansi" />
+        </exec>
+
         <apply executable="php" failonerror="true">
             <arg value="-l" />
 
@@ -50,6 +56,7 @@
             <arg value="app/console" />
 
             <arg value="lint:twig" />
+            <arg value="--ansi" />
             <arg value="--env=test" />
 
             <fileset dir="${basedir}/app/Resources">
@@ -70,6 +77,7 @@
 
             <arg value="doctrine:database:drop" />
             <arg value="--force" />
+            <arg value="--ansi" />
             <arg value="--env=test" />
         </exec>
 
@@ -78,6 +86,7 @@
 
             <arg value="doctrine:database:create" />
             <arg value="--env=test" />
+            <arg value="--ansi" />
         </exec>
 
         <exec executable="php" failonerror="true">
@@ -86,8 +95,10 @@
             <arg value="doctrine:schema:update" />
             <arg value="--force" />
             <arg value="--env=test" />
+            <arg value="--ansi" />
         </exec>
         <exec executable="phpunit" failonerror="true">
+            <arg value="--colors" />
             <arg value="-c" />
             <arg path="${basedir}/app" />
         </exec>
@@ -104,11 +115,13 @@
           <arg value="install" />
           <arg value="--no-interaction" />
           <arg value="--prefer-dist" />
+          <arg value="--ansi" />
         </exec>
         <exec executable="php">
           <arg value="composer.phar" />
           <arg value="dump-autoload" />
           <arg value="--optimize" />
+          <arg value="--ansi" />
         </exec>
     </target>
 
@@ -120,6 +133,7 @@
             <arg value="-n" />
             <arg value="--env=prod" />
             <arg value="--no-debug" />
+            <arg value="--ansi" />
         </exec>
     </target>
 
