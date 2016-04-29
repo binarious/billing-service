@@ -36,6 +36,10 @@ class Project
      */
     private $name;
 
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Bill", mappedBy="project", cascade={"all"})
+     */
+    private $bills;
 
     /**
      * Get id
@@ -96,5 +100,46 @@ class Project
     public function __toString()
     {
         return $this->getName() . ' (' . $this->getCustomer()->getName() . ')';
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->bills = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add bill
+     *
+     * @param \AppBundle\Entity\Bill $bill
+     *
+     * @return Project
+     */
+    public function addBill(\AppBundle\Entity\Bill $bill)
+    {
+        $this->bills[] = $bill;
+
+        return $this;
+    }
+
+    /**
+     * Remove bill
+     *
+     * @param \AppBundle\Entity\Bill $bill
+     */
+    public function removeBill(\AppBundle\Entity\Bill $bill)
+    {
+        $this->bills->removeElement($bill);
+    }
+
+    /**
+     * Get bills
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getBills()
+    {
+        return $this->bills;
     }
 }

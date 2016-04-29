@@ -23,6 +23,11 @@ class Customer
     private $id;
 
     /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Project", mappedBy="customer", cascade={"all"})
+     */
+    private $projects;
+
+    /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Admin", inversedBy="customers")
      */
     private $admin;
@@ -185,5 +190,46 @@ class Customer
     public function __toString()
     {
         return $this->getName();
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->projects = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add project
+     *
+     * @param \AppBundle\Entity\Project $project
+     *
+     * @return Customer
+     */
+    public function addProject(\AppBundle\Entity\Project $project)
+    {
+        $this->projects[] = $project;
+
+        return $this;
+    }
+
+    /**
+     * Remove project
+     *
+     * @param \AppBundle\Entity\Project $project
+     */
+    public function removeProject(\AppBundle\Entity\Project $project)
+    {
+        $this->projects->removeElement($project);
+    }
+
+    /**
+     * Get projects
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getProjects()
+    {
+        return $this->projects;
     }
 }
