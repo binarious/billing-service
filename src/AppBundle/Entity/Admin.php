@@ -23,6 +23,11 @@ class Admin implements UserInterface
     private $id;
 
     /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Customer", mappedBy="admin", cascade={"all"})
+     */
+    private $customers;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255, unique=true)
@@ -134,5 +139,46 @@ class Admin implements UserInterface
     public function getEmail()
     {
         return $this->email;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->customers = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add customer
+     *
+     * @param \AppBundle\Entity\Customer $customer
+     *
+     * @return Admin
+     */
+    public function addCustomer(\AppBundle\Entity\Customer $customer)
+    {
+        $this->customers[] = $customer;
+
+        return $this;
+    }
+
+    /**
+     * Remove customer
+     *
+     * @param \AppBundle\Entity\Customer $customer
+     */
+    public function removeCustomer(\AppBundle\Entity\Customer $customer)
+    {
+        $this->customers->removeElement($customer);
+    }
+
+    /**
+     * Get customers
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCustomers()
+    {
+        return $this->customers;
     }
 }
