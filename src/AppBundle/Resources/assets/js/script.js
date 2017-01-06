@@ -73,3 +73,7 @@ if ($itemsTable.length > 0) {
         });
     });
 }
+
+$('#sendPdf').click(function(evt) {
+    return confirm('Sind Sie sicher?');
+});

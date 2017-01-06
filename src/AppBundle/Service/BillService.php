@@ -111,7 +111,7 @@ class BillService
         }
     }
 
-    private function sendEmail($template, $subject, Bill $bill, $toCustomer = true)
+    public function sendEmail($template, $subject, Bill $bill, $toCustomer = true, $pdf = null)
     {
         $customer = $bill->getProject()->getCustomer();
         $message = \Swift_Message::newInstance()
@@ -132,6 +132,14 @@ class BillService
                 'text/html'
             );
 
+        if ($pdf) {
+            $attachment = \Swift_Attachment::newInstance()
+              ->setFilename($bill->getName() . '.pdf')
+              ->setContentType('application/pdf')
+              ->setBody($pdf);
+            $message->attach($attachment);
+        }
+
         $this->mailer->send($message);
     }
 
@@ -148,7 +156,7 @@ class BillService
         ) . '-' . $year;
     }
 
-    public function generatePdf(Bill $bill)
+    public function generatePdf(Bill $bill, $toString = false)
     {
         $template = 'modern';
         $footer = $this->templating->render(
@@ -185,6 +193,6 @@ class BillService
             ''
         );
 
-        $pdf->Output($bill->getName() . '.pdf', 'I');
+        return $pdf->Output($bill->getName() . '.pdf', $toString ? 'S' : 'I');
     }
 }

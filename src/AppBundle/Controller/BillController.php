@@ -37,6 +37,28 @@ class BillController extends Controller
     }
 
     /**
+     * @Route("/send/{id}.pdf", name="bill_send_pdf")
+     */
+    public function sendPdfAction(Bill $bill)
+    {
+        $pdfData = $this->get('bill_service')->generatePdf($bill, true);
+        $this->get('bill_service')->sendEmail(
+            'bill',
+            'Rechnung ' . $bill->getName(),
+            $bill,
+            true,
+            $pdfData
+        );
+
+        $bill->setSentViaMailDate(new \DateTime());
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($bill);
+        $em->flush();
+
+        return $this->redirectToRoute('bill_show', array('id' => $bill->getId()));
+    }
+
+    /**
      * @Route("/{id}.pdf", name="bill_pdf")
      */
     public function pdfAction(Bill $bill)

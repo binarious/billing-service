@@ -43,6 +43,12 @@ class Bill
     private $date;
 
     /**
+     * @var \DateTime
+     * @ORM\Column(type="date", nullable=true)
+     */
+    private $sentViaMailDate;
+
+    /**
      * @var int
      *
      * @Assert\NotBlank()
@@ -373,5 +379,29 @@ class Bill
     public function getItems()
     {
         return $this->items;
+    }
+
+    /**
+     * Set sentViaMailDate
+     *
+     * @param \DateTime $sentViaMailDate
+     *
+     * @return Bill
+     */
+    public function setSentViaMailDate($sentViaMailDate)
+    {
+        $this->sentViaMailDate = $sentViaMailDate;
+
+        return $this;
+    }
+
+    /**
+     * Get sentViaMailDate
+     *
+     * @return \DateTime
+     */
+    public function getSentViaMailDate()
+    {
+        return $this->sentViaMailDate;
     }
 }
