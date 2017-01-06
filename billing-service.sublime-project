@@ -1,0 +1,13 @@
+{
+	"folders":
+	[
+		{
+			"path": "."
+		}
+	],
+    "settings": {
+        "xdebug": {
+            "url": "https://bs.localhost:8000"
+        }
+    }
+}

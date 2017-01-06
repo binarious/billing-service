@@ -12,3 +12,4 @@
 /composer.phar
 /src/AppBundle/Resources/public/bower_components/
 *.php~
+Caddyfile
