@@ -135,6 +135,19 @@ class BillService
         $this->mailer->send($message);
     }
 
+    public function getNextBillName()
+    {
+        $year = date('Y');
+        $count = count($this->em->getRepository('AppBundle:Bill')->findByYear(date('Y'))) + 1;
+
+        return str_pad(
+            $count,
+            3,
+            '0',
+            STR_PAD_LEFT
+        ) . '-' . $year;
+    }
+
     public function generatePdf(Bill $bill)
     {
         $template = 'modern';

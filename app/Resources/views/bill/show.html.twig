@@ -14,6 +14,13 @@
                 {{ form_end(pay_form) }}
             {% endif %}
 
+            <a
+                href="{{ path('bill_pdf', { 'id': bill.id }) }}"
+                class="btn btn-default"
+            >
+                <i class="fa fa-file-pdf-o"></i> PDF herunterladen
+            </a>
+
             <a href="{{ path('bill_edit', {'id': bill.id}) }}" class="btn btn-default">
                 <i class="fa fa-edit"></i> Bearbeiten
             </a>
