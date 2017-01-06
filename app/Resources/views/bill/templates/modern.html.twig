@@ -52,7 +52,7 @@
 
     {% for item in bill.items %}
         <tr>
-            <td style="border-bottom: 2px solid #367DA2">{{ item.title }}</td>
+            <td style="border-bottom: 2px solid #367DA2">{{ item.title }}{% if item.description %}<br>{{ item.description }}{% endif %}</td>
             <td style="border-bottom: 2px solid #367DA2; text-align: center;">{{ item.quantity }}</td>
             <td style="border-bottom: 2px solid #367DA2; text-align: right">{{ item.amount|number_format(2, ',', '.') }} €</td>
             <td style="border-bottom: 2px solid #367DA2; text-align: right">{{ (item.quantity * item.amount)|number_format(2, ',', '.') }} €</td>
