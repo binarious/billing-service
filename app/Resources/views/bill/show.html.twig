@@ -144,5 +144,34 @@
                 {% endif %}
             </div>
         </div>
+        <div class="col-lg-6 col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Rechnungspositionen
+                </div>
+
+                <table class="table table-stripe">
+                    <tr>
+                        <th>Beschreibung</th>
+                        <th>Anzahl</th>
+                        <th>Preis</th>
+                        <th>Betrag</th>
+                    </tr>
+
+                    {% for item in bill.items %}
+                        <tr>
+                            <td>
+                                {{ item.title }}
+                                {% if item.description %}
+                                    <br>{{ item.description }}
+                                {% endif %}
+                            </td>
+                            <td>{{ item.quantity }}</td>
+                            <td>{{ item.amount|number_format(2, ',', '.') }} €</td>
+                            <td>{{ item.amount|number_format(2, ',', '.') }} €</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
     </div>
 {% endblock %}
