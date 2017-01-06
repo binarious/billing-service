@@ -77,6 +77,7 @@ class BillController extends Controller
         $bill = new Bill();
         $bill->setName($this->get('bill_service')->getNextBillName());
         $bill->setDate(new \DateTime());
+        $bill->setDeadlineDays(15);
         $form = $this->createForm('AppBundle\Form\BillType', $bill, [
             'admin' => $this->getUser()->getId()
         ]);
