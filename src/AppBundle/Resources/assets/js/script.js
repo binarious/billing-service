@@ -46,7 +46,6 @@ function addItemsForm($collectionHolder, $newLink) {
 }
 
 $itemsTable = $('#itemsTable');
-console.log('items table:', $itemsTable.length);
 if ($itemsTable.length > 0) {
     var $collectionHolder;
 
