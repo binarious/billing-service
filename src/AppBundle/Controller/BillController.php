@@ -52,6 +52,7 @@ class BillController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            $bill->updateAmount();
             $em->persist($bill);
             $em->flush();
 
@@ -109,6 +110,7 @@ class BillController extends Controller
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            $bill->updateAmount();
             $em->persist($bill);
             $em->flush();
 

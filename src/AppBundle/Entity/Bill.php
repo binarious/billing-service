@@ -29,6 +29,11 @@ class Bill
     private $project;
 
     /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\BillItem", mappedBy="bill", cascade={"all"})
+     */
+    private $items;
+
+    /**
      * @var \DateTime
      *
      * @Assert\NotBlank()
@@ -56,7 +61,6 @@ class Bill
     /**
      * @var string
      *
-     * @Assert\NotBlank()
      * @ORM\Column(name="amount", type="decimal", precision=10, scale=2)
      */
     private $amount;
@@ -284,6 +288,15 @@ class Bill
         return $this->name;
     }
 
+    public function updateAmount()
+    {
+        $amount = 0;
+        foreach ($this->items as $item) {
+            $amount += $item->getQuantity() * $item->getAmount();
+        }
+        $this->amount = $amount;
+    }
+
     public function doDun()
     {
         $this->lastDun = new \DateTime();
@@ -318,5 +331,47 @@ class Bill
     public function getShutdownSince()
     {
         return $this->shutdownSince;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->items = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add item
+     *
+     * @param \AppBundle\Entity\BillItem $item
+     *
+     * @return Bill
+     */
+    public function addItem(\AppBundle\Entity\BillItem $item)
+    {
+        $item->setBill($this);
+        $this->items[] = $item;
+
+        return $this;
+    }
+
+    /**
+     * Remove item
+     *
+     * @param \AppBundle\Entity\BillItem $item
+     */
+    public function removeItem(\AppBundle\Entity\BillItem $item)
+    {
+        $this->items->removeElement($item);
+    }
+
+    /**
+     * Get items
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getItems()
+    {
+        return $this->items;
     }
 }

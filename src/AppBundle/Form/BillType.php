@@ -6,6 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class BillType extends AbstractType
 {
@@ -19,7 +20,6 @@ class BillType extends AbstractType
             ->add('name')
             ->add('date', 'date')
             ->add('deadlineDays')
-            ->add('amount')
             ->add('project', EntityType::class, [
                 'class' => 'AppBundle:Project',
                 'query_builder' => function ($er) use ($options) {
@@ -30,6 +30,11 @@ class BillType extends AbstractType
                         ->setParameter('admin', $options['admin'])
                         ->orderBy('p.name');
                 }
+            ])
+            ->add('items', CollectionType::class, [
+                'entry_type' => BillItemType::class,
+                'allow_add' => true,
+                'by_reference' => false
             ])
         ;
 
