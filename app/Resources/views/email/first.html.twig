@@ -8,4 +8,6 @@
     <p>Für Ihr Projekt <b>{{ bill.project.name }}</b> bei <b>{{ bill.project.customer.admin.name }}</b> konnte unser automatisiertes Zahlungssystem noch keinen Zahlungseingang für die Rechnung <b>{{ bill.name }}</b> vom <b>{{ bill.date|date('d.m.Y') }}</b> in Höhe von <b>{{ bill.amount|number_format(2, ',', '.') }} €</b> verzeichnen.</p>
 
     <p>Bitte teilen Sie uns mit, ob Sie bereits gezahlt haben oder nehmen Sie die Überweisung innerhalb der nächsten <b>{{ firstDunDeadline }} Tage</b> vor.</p>
+
+    <p>Falls Sie nicht mehr im Besitz der Rechnung sein sollten, können Sie diese hier erneut herunterladen: <a href="{{ url('bill_token', {'id': bill.id, 'token': bill.token }) }}">Rechnung {{ bill.name }}</a></p>
 {% endblock %}

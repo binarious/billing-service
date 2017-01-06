@@ -4,10 +4,14 @@
     Rechnung
 {% endblock %}
 
+{% block smallHeadline %}
+    Eine neue Rechnung
+{% endblock %}
+
 {% block body %}
     <p>Für Ihr Projekt <b>{{ bill.project.name }}</b> bei <b>{{ bill.project.customer.admin.name }}</b> wurde eine neue Rechnung hinterlegt: <b>{{ bill.name }}</b> vom <b>{{ bill.date|date('d.m.Y') }}</b> in Höhe von <b>{{ bill.amount|number_format(2, ',', '.') }} €</b>.</p>
 
-    <p>Sie können die Rechnung dem Anhang entnehmen oder jederzeit über folgenden Link aufrufen: <a href="#">Rechnung {{ bill.name }}</a></p>
+    <p>Sie können die Rechnung dem Anhang entnehmen oder jederzeit über folgenden Link aufrufen: <a href="{{ url('bill_token', {'id': bill.id, 'token': bill.token }) }}">Rechnung {{ bill.name }}</a></p>
 
     <p>Vielen Dank für die Zusammenarbeit.</p>
 {% endblock %}

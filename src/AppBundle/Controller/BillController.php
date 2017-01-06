@@ -37,6 +37,21 @@ class BillController extends Controller
     }
 
     /**
+     * Lists all Bill entities.
+     *
+     * @Route("/token/{token}/{id}.pdf", name="bill_token")
+     * @Method("GET")
+     */
+    public function tokenAction(Bill $bill, $token)
+    {
+        if ($bill->getToken() !== $token) {
+            throw $this->createNotFoundException();
+        }
+
+        return new Response($this->get('bill_service')->generatePdf($bill));
+    }
+
+    /**
      * @Route("/send/{id}.pdf", name="bill_send_pdf")
      */
     public function sendPdfAction(Bill $bill)
@@ -78,6 +93,7 @@ class BillController extends Controller
         $bill->setName($this->get('bill_service')->getNextBillName());
         $bill->setDate(new \DateTime());
         $bill->setDeadlineDays(15);
+        $bill->setToken(hash('sha512', random_bytes(10)));
         $form = $this->createForm('AppBundle\Form\BillType', $bill, [
             'admin' => $this->getUser()->getId()
         ]);

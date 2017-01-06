@@ -67,6 +67,13 @@ class Bill
     /**
      * @var string
      *
+     * @ORM\Column(type="string")
+     */
+    private $token;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="amount", type="decimal", precision=10, scale=2)
      */
     private $amount;
@@ -403,5 +410,29 @@ class Bill
     public function getSentViaMailDate()
     {
         return $this->sentViaMailDate;
+    }
+
+    /**
+     * Set token
+     *
+     * @param string $token
+     *
+     * @return Bill
+     */
+    public function setToken($token)
+    {
+        $this->token = $token;
+
+        return $this;
+    }
+
+    /**
+     * Get token
+     *
+     * @return string
+     */
+    public function getToken()
+    {
+        return $this->token;
     }
 }

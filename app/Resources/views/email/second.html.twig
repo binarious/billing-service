@@ -10,4 +10,6 @@
     <p>Insofern möchten wir Sie nun daran erinnern, dass Sie entsprechend BGB § 288 Abs. 2 i. V. m. § 247 in Verzug geraten.</p>
 
     <p>Bitte teilen Sie uns mit, ob Sie bereits gezahlt haben oder nehmen Sie die Überweisung vor.</p>
+
+    <p>Falls Sie nicht mehr im Besitz der Rechnung sein sollten, können Sie diese hier erneut herunterladen: <a href="{{ url('bill_token', {'id': bill.id, 'token': bill.token }) }}">Rechnung {{ bill.name }}</a></p>
 {% endblock %}

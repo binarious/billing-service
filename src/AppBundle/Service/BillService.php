@@ -140,7 +140,9 @@ class BillService
             $message->attach($attachment);
         }
 
-        $this->mailer->send($message);
+        if (!$this->mailer->send($message)) {
+            throw new \RuntimeException('Could not send Email');
+        }
     }
 
     public function getNextBillName()

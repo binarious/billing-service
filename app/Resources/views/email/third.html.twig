@@ -18,4 +18,6 @@
         <li>Verlangen von Verzugszinsen i. H. v. Basiszinssatz + 9 % (gem. BGB § 288)</li>
         <li>Vollstreckung</li>
     </ul>
+
+    <p>Falls Sie nicht mehr im Besitz der Rechnung sein sollten, können Sie diese hier erneut herunterladen: <a href="{{ url('bill_token', {'id': bill.id, 'token': bill.token }) }}">Rechnung {{ bill.name }}</a></p>
 {% endblock %}
