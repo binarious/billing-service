@@ -1,0 +1,72 @@
+<div style="border-top: 2px solid #367DA2">&nbsp;</div>
+
+<h1 style="color: #367DA2; margin-top: -10px;text-transform: capitalize;">{{ bill.project.customer.admin.firstname }} {{ bill.project.customer.admin.lastname }}</h1>
+<p><br><br></p>
+<p><br><br></p>
+
+<table>
+    <tr>
+        <td>
+            {%- spaceless -%}
+                <p><b>{{ bill.project.customer.name }}</b><br>{{ bill.project.customer.street }} {{ bill.project.customer.houseNumber }}<br>{{ bill.project.customer.zipCode }} {{ bill.project.customer.city }}</p>
+            {%- endspaceless -%}
+        </td>
+
+        <td width="300" style="text-align: right">
+            <table cellpadding="3">
+                <tr>
+                    <td color="#777">Datum</td>
+                    <td style="text-align: left">{{ bill.date|date('d.m.Y') }}</td>
+                </tr>
+                <tr>
+                    <td color="#777">Rechnungsnr.</td>
+                    <td style="text-align: left">{{ bill.name }}</td>
+                </tr>
+                <tr>
+                    <td color="#777">Zahlungsziel</td>
+                    <td style="text-align: left">15 Tage</td>
+                </tr>
+                <tr>
+                    <td color="#777">E-Mail-Adresse</td>
+                    <td style="text-align: left">{{ bill.project.customer.admin.email }}</td>
+                </tr>
+                <tr>
+                    <td color="#777">Telefonnr.</td>
+                    <td style="text-align: left">{{ bill.project.customer.admin.telephone }}</td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+
+<p><br></p>
+<h1>Rechnung</h1>
+
+<table cellpadding="8">
+    <tr>
+        <th width="300" style="border-bottom: 2px solid #367DA2"><b style="color: #367DA2">BESCHREIBUNG</b></th>
+        <th width="80" style="border-bottom: 2px solid #367DA2; text-align: center;"><b style="color: #367DA2">ANZAHL</b></th>
+        <th width="80" style="border-bottom: 2px solid #367DA2; text-align: right;"><b style="color: #367DA2">PREIS</b></th>
+        <th width="80" style="border-bottom: 2px solid #367DA2; text-align: right;"><b style="color: #367DA2">BETRAG</b></th>
+    </tr>
+
+    {% for item in bill.items %}
+        <tr>
+            <td style="border-bottom: 2px solid #367DA2">{{ item.title }}</td>
+            <td style="border-bottom: 2px solid #367DA2; text-align: center;">{{ item.quantity }}</td>
+            <td style="border-bottom: 2px solid #367DA2; text-align: right">{{ item.amount|number_format(2, ',', '.') }} €</td>
+            <td style="border-bottom: 2px solid #367DA2; text-align: right">{{ (item.quantity * item.amount)|number_format(2, ',', '.') }} €</td>
+        </tr>
+    {% endfor %}
+
+    <tr>
+        <td colspan="2"></td>
+        <td style="text-align: right"><b>Gesamt</b></td>
+        <td style="text-align: right">{{ bill.amount|number_format(2, ',', '.') }} €</td>
+    </tr>
+</table>
+
+<br><br>
+Es erfolgt kein Ausweis der Umsatzsteuer aufgrund der Anwendung der   Kleinunternehmerregelung gem. § 19 UStG.
+<br><br>
+Vielen Dank für Ihren Auftrag und die angenehme Zusammenarbeit. Bitte überweisen Sie den Rechnungsbetrag innerhalb des oben angegebenen Zahlungsziels an die unten stehende Bankverbindung.

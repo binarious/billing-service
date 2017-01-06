@@ -4,7 +4,7 @@ namespace AppBundle\Service;
 use JMS\DiExtraBundle\Annotation\Inject;
 use JMS\DiExtraBundle\Annotation\InjectParams;
 use JMS\DiExtraBundle\Annotation\Service;
-
+use AppBundle\TCPDF\TCPDFCustomFooter;
 use AppBundle\Entity\Bill;
 
 /**
@@ -133,5 +133,45 @@ class BillService
             );
 
         $this->mailer->send($message);
+    }
+
+    public function generatePdf(Bill $bill)
+    {
+        $template = 'modern';
+        $footer = $this->templating->render(
+            ':bill:templates/' . $template . '.footer.html.twig',
+            [
+                'bill' => $bill,
+            ]
+        );
+
+        $pdf = new TCPDFCustomFooter(\PDF_PAGE_ORIENTATION, \PDF_UNIT, 'LETTER', true, 'UTF-8', false);
+
+        $pdf->setFooterHtml($footer);
+        $pdf->SetAuthor('Martin Bieder');
+        $pdf->SetTitle('Rechnung ' . $bill->getName());
+
+        // set font
+        $pdf->SetFont('dejavusans', '', 10);
+
+        // add a page
+        $pdf->AddPage();
+
+        // output the HTML content
+        $pdf->writeHTML(
+            $this->templating->render(
+                ':bill:templates/' . $template . '.html.twig',
+                [
+                    'bill' => $bill,
+                ]
+            ),
+            true,
+            false,
+            true,
+            false,
+            ''
+        );
+
+        $pdf->Output($bill->getName() . '.pdf', 'I');
     }
 }

@@ -35,6 +35,12 @@
                 <td>{{ bill.date|date('d.m.Y') }}</td>
                 <td class="tbl-cell-right">
                     <a
+                        href="{{ path('bill_pdf', { 'id': bill.id }) }}"
+                        class="btn btn-primary btn-sm"
+                    >
+                        <i class="fa fa-file-pdf-o"></i>
+                    </a>
+                    <a
                         href="{{ path('bill_show', { 'id': bill.id }) }}"
                         class="btn btn-default btn-sm"
                     >

@@ -1,0 +1,15 @@
+<div style="border-top: 2px solid #367DA2; padding-top: 5px;font-size: 10px;">
+    <br>
+    <table>
+        <tr>
+            <td><b>Sitz des Unternehmens:</b><br>{{ bill.project.customer.admin.street }} {{ bill.project.customer.admin.houseNumber }}<br>{{ bill.project.customer.admin.zipCode }} {{ bill.project.customer.admin.city }}
+            </td>
+            <td><b>Bankverbindung:</b><br>{{ bill.project.customer.admin.bankName }}<br>IBAN: {{ bill.project.customer.admin.iban }}<br>BIC: {{ bill.project.customer.admin.bic }}</td>
+            <td>
+                <b>Geschäftsführung:</b><br>
+                {{ bill.project.customer.admin.firstname }} {{ bill.project.customer.admin.lastname }}<br>
+                St.Nr.: {{ bill.project.customer.admin.taxNumber }}
+            </td>
+        </tr>
+    </table>
+</div>

@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -33,6 +34,14 @@ class BillController extends Controller
         return $this->render('bill/index.html.twig', array(
             'bills' => $bills,
         ));
+    }
+
+    /**
+     * @Route("/{id}.pdf", name="bill_pdf")
+     */
+    public function pdfAction(Bill $bill)
+    {
+        return new Response($this->get('bill_service')->generatePdf($bill));
     }
 
     /**
@@ -172,6 +181,7 @@ class BillController extends Controller
 
         return $this->redirectToRoute('bill_show', ['id' => $bill->getId()]);
     }
+
 
     /**
      * Creates a form to delete a Bill entity.
