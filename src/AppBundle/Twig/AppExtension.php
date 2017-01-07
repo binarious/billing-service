@@ -87,7 +87,7 @@ class AppExtension extends \Twig_Extension
         $when = $when === 1 ? 'morgen' : 'in ' . $when . ' Tagen';
 
         return '<span class="badge">' . $when . '</span>
-                <i class="fa fa-fw fa-' . $icon . '"></i> ' . $action . ' ' .
+                <i class="fa fa-fw fa-' . $icon . '"></i> <b>' . $action . '</b><br><i class="fa fa-fw"></i> ' .
                 $bill->getName();
     }
 

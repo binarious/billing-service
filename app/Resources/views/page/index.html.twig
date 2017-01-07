@@ -89,7 +89,7 @@
                                     <tr>
                                         <th>Nr.</th>
                                         <th>Datum</th>
-                                        <th>Forderung</th>
+                                        <th class="tbl-cell-right">Forderung</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -101,7 +101,7 @@
                                                 </a>
                                             </td>
                                             <td>{{ bill.date|date('d.m.Y') }}</td>
-                                            <td>{{ bill.amount|number_format(2, ',', '.') }}</td>
+                                            <td class="tbl-cell-right">{{ bill.amount|number_format(2, ',', '.') }} €</td>
                                         </tr>
                                     {% endfor %}
                                 </tbody>
@@ -125,16 +125,28 @@
                     <h3 class="panel-title"><i class="fa fa-clock-o fa-fw"></i> Nächste Aktionen</h3>
                 </div>
                 <div class="panel-body">
-                    <div class="list-group">
-                        {% for bill in unpayed %}
-                            {% set value = bill|nextBillStep %}
-                            {% if value %}
-                                <a href="{{ path('bill_show', {'id': bill.id}) }}" class="list-group-item">
-                                    {{ value|raw }}
-                                </a>
+                    {% set hasItems = false %}
+                    {% set printedWrapper = false %}
+                    {% for bill in unpayed %}
+                        {% set value = bill|nextBillStep %}
+                        {% if value %}
+                            {% if not printedWrapper %}
+                                {% set printedWrapper = true %}
+                                <div class="list-group">
                             {% endif %}
-                        {% endfor %}
-                    </div>
+                            {% set hasItems = true %}
+                            <a href="{{ path('bill_show', {'id': bill.id}) }}" class="list-group-item">
+                                {{ value|raw }}
+                            </a>
+                        {% endif %}
+                    {% endfor %}
+                    {% if printedWrapper %}
+                        </div>
+                    {% endif %}
+
+                    {% if not hasItems %}
+                        <p>Keine nächsten Aktionen.</p>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -151,7 +163,7 @@
                                     <tr>
                                         <th>Nr.</th>
                                         <th>Datum</th>
-                                        <th>Forderung</th>
+                                        <th class="tbl-cell-right">Forderung</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -163,7 +175,7 @@
                                                 </a>
                                             </td>
                                             <td>{{ bill.date|date('d.m.Y') }}</td>
-                                            <td>{{ bill.amount|number_format(2, ',', '.') }}</td>
+                                            <td class="tbl-cell-right">{{ bill.amount|number_format(2, ',', '.') }} €</td>
                                         </tr>
                                     {% endfor %}
                                 </tbody>
