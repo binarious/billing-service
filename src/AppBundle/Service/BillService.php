@@ -61,6 +61,19 @@ class BillService
     }
 
     /**
+     * Queries all bills which are due tomorrow based on the configured deadlines.
+     * @return array Doctrine result
+     */
+    public function getAlmostDue()
+    {
+        return $this->em->getRepository('AppBundle:Bill')->findDue(
+            $this->firstDunDeadline - 1,
+            $this->secondDunDeadline - 1,
+            $this->laststepDeadline - 1
+        );
+    }
+
+    /**
      * Duns the given bill. The required mails will be sent here.
      * @param  Bill   $bill Bill entity
      */
@@ -87,6 +100,21 @@ class BillService
 
         $this->em->persist($bill);
         $this->em->flush();
+    }
+
+     /**
+     * Notify about the next step.
+     * @param  Bill   $bill Bill entity
+     */
+    public function notify(Bill $bill)
+    {
+        $projectName = $bill->getProject()->getName();
+        $this->sendEmail(
+            'notify',
+            'Benachrichtigung über nächste Mahnung: ' . $projectName,
+            $bill,
+            false
+        );
     }
 
     /**
