@@ -11,3 +11,13 @@ $brand-primary: #509765;
 .pull-right form {
     display: inline-block;
 }
+
+.control-label.required:after {
+    content: "*";
+    display: inline-block;
+    margin-left: 4px;
+}
+
+.tbl-cell-right {
+    text-align: right;
+}

@@ -1,0 +1,30 @@
+{{ form_row(form.project) }}
+{{ form_row(form.name) }}
+{{ form_row(form.date) }}
+{{ form_row(form.deadlineDays) }}
+
+<h3>Rechnungspositionen</h3>
+<table id="itemsTable" class="table table-striped">
+    <thead>
+        <tr>
+            <th>Titel</th>
+            <th>Beschreibung</th>
+            <th style="width: 90px;">Anzahl</th>
+            <th style="width: 150px;">Preis</th>
+        </tr>
+    </thead>
+    <tbody class="items" data-prototype="&lt;td&gt;{{ form_widget(form.items.vars.prototype.title)|e }}&lt;/td&gt;&lt;td&gt;{{ form_widget(form.items.vars.prototype.description)|e }}&lt;/td&gt;&lt;td&gt;{{ form_widget(form.items.vars.prototype.quantity)|e }}&lt;/td&gt;&lt;td&gt;{{ form_widget(form.items.vars.prototype.amount)|e }}&lt;/td&gt;">
+        {% for item in form.items %}
+            <tr class="item">
+                <td>{{ form_widget(item.title) }}</td>
+                <td>{{ form_widget(item.description) }}</td>
+                <td>{{ form_widget(item.quantity) }}</td>
+                <td>{{ form_widget(item.amount) }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% if form.accountBalance is defined %}
+    {{ form_row(form.accountBalance) }}
+{% endif %}

@@ -25,6 +25,15 @@ class BillRepository extends EntityRepository
             ->getResult();
     }
 
+    public function findByYear($year)
+    {
+        return $this
+            ->createQueryBuilder('b')
+            ->where('b.date BETWEEN \'' . $year . '-01-01 00:00:00\' AND \'' . $year . '-12-31 23:59:59\'')
+            ->getQuery()
+            ->getResult();
+    }
+
     public function findOfflineByAdmin($admin)
     {
         return $this

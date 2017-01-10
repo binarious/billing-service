@@ -5,6 +5,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
+{% import _self as this %}
 {% block stylesheets %}
     {% stylesheets filter="compass" output="css/compiled/*.v1.css"
         "@AppBundle/Resources/assets/scss/main.scss"
@@ -59,10 +60,10 @@
             <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
-                    {{ _self.nav_link('Dashboard', 'homepage', 'dashboard') }}
-                    {{ _self.nav_link('Kunden', 'customer', 'users') }}
-                    {{ _self.nav_link('Projekte', 'project', 'wrench') }}
-                    {{ _self.nav_link('Rechnungen', 'bill', 'file-text-o') }}
+                    {{ this.nav_link('Dashboard', 'homepage', 'dashboard') }}
+                    {{ this.nav_link('Kunden', 'customer', 'users') }}
+                    {{ this.nav_link('Projekte', 'project', 'wrench') }}
+                    {{ this.nav_link('Rechnungen', 'bill', 'file-text-o') }}
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
@@ -78,7 +79,7 @@
     </div>
     <!-- /#wrapper -->
 
-    {% javascripts output='js/compiled/base-javascript.v11.min.js'
+    {% javascripts output='js/compiled/base-javascript.v12.min.js'
     '@AppBundle/Resources/public/bower_components/jquery/dist/jquery.min.js'
     '@AppBundle/Resources/public/bower_components/bootstrap/dist/js/bootstrap.min.js'
     '@AppBundle/Resources/public/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js'

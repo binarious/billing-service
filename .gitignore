@@ -12,3 +12,7 @@
 /composer.phar
 /src/AppBundle/Resources/public/bower_components/
 *.php~
+Caddyfile
+*.sublime-project
+*.sublime-workspace
+*.vscode

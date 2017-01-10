@@ -23,6 +23,7 @@ class ProjectType extends AbstractType
                     return $er
                         ->createQueryBuilder('c')
                         ->where('c.admin = :admin')
+                        ->orderBy('c.name')
                         ->setParameter('admin', $options['admin']);
                 }
             ])

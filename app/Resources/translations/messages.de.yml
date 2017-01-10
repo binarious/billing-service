@@ -7,3 +7,8 @@ Firstname: Vorname
 Lastname: Nachname
 Customer: Kunde
 Current passwort: Aktuelles Passwort
+Street: Straße
+House number: Hausnummer
+Zip code: PLZ
+City: Ort
+Account balance: Saldo

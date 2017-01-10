@@ -1,0 +1,11 @@
+{% extends 'email/baseMail.html.twig' %}
+
+{% block subject %}
+    Benachrichtigung über nächste Mahnung
+{% endblock %}
+
+{% block body %}
+    <p>Morgen wird für das Projekt <b>{{ bill.project.name }}</b> ein Mahnungsschritt ausgeführt.</p>
+
+    <p><a href="{{ url('bill_show', {'id': bill.id }) }}">Rechnung aufrufen</a></p>
+{% endblock %}

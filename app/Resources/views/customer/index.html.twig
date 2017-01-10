@@ -20,7 +20,8 @@
                 <th>ID</th>
                 <th>Name</th>
                 <th>E-Mail</th>
-                <th>Aktionen</th>
+                <th>Ort</th>
+                <th class="tbl-cell-right">Aktionen</th>
             </tr>
         </thead>
         <tbody>
@@ -29,7 +30,8 @@
                 <td><a href="{{ path('customer_edit', { 'id': customer.id }) }}">{{ customer.id }}</a></td>
                 <td>{{ customer.name }}</td>
                 <td>{{ customer.email }}</td>
-                <td>
+                <td>{{ customer.city }}</td>
+                <td class="tbl-cell-right">
                     <a
                         href="{{ path('customer_edit', { 'id': customer.id }) }}"
                         class="btn btn-default btn-sm"

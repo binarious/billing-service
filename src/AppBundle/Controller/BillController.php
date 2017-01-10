@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -36,6 +37,51 @@ class BillController extends Controller
     }
 
     /**
+     * Lists all Bill entities.
+     *
+     * @Route("/token/{token}/{id}.pdf", name="bill_token")
+     * @Method("GET")
+     */
+    public function tokenAction(Bill $bill, $token)
+    {
+        if ($bill->getToken() !== $token) {
+            throw $this->createNotFoundException();
+        }
+
+        return new Response($this->get('bill_service')->generatePdf($bill));
+    }
+
+    /**
+     * @Route("/send/{id}.pdf", name="bill_send_pdf")
+     */
+    public function sendPdfAction(Bill $bill)
+    {
+        $pdfData = $this->get('bill_service')->generatePdf($bill, true);
+        $this->get('bill_service')->sendEmail(
+            'bill',
+            'Rechnung ' . $bill->getName(),
+            $bill,
+            true,
+            $pdfData
+        );
+
+        $bill->setSentViaMailDate(new \DateTime());
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($bill);
+        $em->flush();
+
+        return $this->redirectToRoute('bill_show', array('id' => $bill->getId()));
+    }
+
+    /**
+     * @Route("/{id}.pdf", name="bill_pdf")
+     */
+    public function pdfAction(Bill $bill)
+    {
+        return new Response($this->get('bill_service')->generatePdf($bill));
+    }
+
+    /**
      * Creates a new Bill entity.
      *
      * @Route("/new", name="bill_new")
@@ -44,7 +90,10 @@ class BillController extends Controller
     public function newAction(Request $request)
     {
         $bill = new Bill();
+        $bill->setName($this->get('bill_service')->getNextBillName());
         $bill->setDate(new \DateTime());
+        $bill->setDeadlineDays(15);
+        $bill->setToken(hash('sha512', random_bytes(10)));
         $form = $this->createForm('AppBundle\Form\BillType', $bill, [
             'admin' => $this->getUser()->getId()
         ]);
@@ -52,6 +101,7 @@ class BillController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            $bill->updateAmount();
             $em->persist($bill);
             $em->flush();
 
@@ -109,6 +159,7 @@ class BillController extends Controller
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            $bill->updateAmount();
             $em->persist($bill);
             $em->flush();
 
@@ -170,6 +221,7 @@ class BillController extends Controller
 
         return $this->redirectToRoute('bill_show', ['id' => $bill->getId()]);
     }
+
 
     /**
      * Creates a form to delete a Bill entity.

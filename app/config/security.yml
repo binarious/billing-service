@@ -20,7 +20,9 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
-
+        bill:
+            pattern: ^/bill/token/
+            security: false
         main:
             pattern:    ^/
             http_basic: ~

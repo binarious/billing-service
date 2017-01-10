@@ -4,7 +4,7 @@ namespace AppBundle\Service;
 use JMS\DiExtraBundle\Annotation\Inject;
 use JMS\DiExtraBundle\Annotation\InjectParams;
 use JMS\DiExtraBundle\Annotation\Service;
-
+use AppBundle\TCPDF\TCPDFCustomFooter;
 use AppBundle\Entity\Bill;
 
 /**
@@ -61,6 +61,19 @@ class BillService
     }
 
     /**
+     * Queries all bills which are due tomorrow based on the configured deadlines.
+     * @return array Doctrine result
+     */
+    public function getAlmostDue()
+    {
+        return $this->em->getRepository('AppBundle:Bill')->findDue(
+            $this->firstDunDeadline - 1,
+            $this->secondDunDeadline - 1,
+            $this->laststepDeadline - 1
+        );
+    }
+
+    /**
      * Duns the given bill. The required mails will be sent here.
      * @param  Bill   $bill Bill entity
      */
@@ -89,6 +102,21 @@ class BillService
         $this->em->flush();
     }
 
+     /**
+     * Notify about the next step.
+     * @param  Bill   $bill Bill entity
+     */
+    public function notify(Bill $bill)
+    {
+        $projectName = $bill->getProject()->getName();
+        $this->sendEmail(
+            'notify',
+            'Benachrichtigung über nächste Mahnung: ' . $projectName,
+            $bill,
+            false
+        );
+    }
+
     /**
      * Sets the bill as payed and send information mails to the customer and
      * admin if a shutdown was announced previously.
@@ -111,7 +139,7 @@ class BillService
         }
     }
 
-    private function sendEmail($template, $subject, Bill $bill, $toCustomer = true)
+    public function sendEmail($template, $subject, Bill $bill, $toCustomer = true, $pdf = null)
     {
         $customer = $bill->getProject()->getCustomer();
         $message = \Swift_Message::newInstance()
@@ -132,6 +160,69 @@ class BillService
                 'text/html'
             );
 
-        $this->mailer->send($message);
+        if ($pdf) {
+            $attachment = \Swift_Attachment::newInstance()
+              ->setFilename($bill->getName() . '.pdf')
+              ->setContentType('application/pdf')
+              ->setBody($pdf);
+            $message->attach($attachment);
+        }
+
+        if (!$this->mailer->send($message)) {
+            throw new \RuntimeException('Could not send Email');
+        }
+    }
+
+    public function getNextBillName()
+    {
+        $year = date('Y');
+        $count = count($this->em->getRepository('AppBundle:Bill')->findByYear(date('Y'))) + 1;
+
+        return str_pad(
+            $count,
+            3,
+            '0',
+            STR_PAD_LEFT
+        ) . '-' . $year;
+    }
+
+    public function generatePdf(Bill $bill, $toString = false)
+    {
+        $template = 'modern';
+        $footer = $this->templating->render(
+            ':bill:templates/' . $template . '.footer.html.twig',
+            [
+                'bill' => $bill,
+            ]
+        );
+
+        $pdf = new TCPDFCustomFooter(\PDF_PAGE_ORIENTATION, \PDF_UNIT, 'LETTER', true, 'UTF-8', false);
+
+        $pdf->setFooterHtml($footer);
+        $pdf->SetAuthor('Martin Bieder');
+        $pdf->SetTitle('Rechnung ' . $bill->getName());
+
+        // set font
+        $pdf->SetFont('dejavusans', '', 10);
+
+        // add a page
+        $pdf->AddPage();
+
+        // output the HTML content
+        $pdf->writeHTML(
+            $this->templating->render(
+                ':bill:templates/' . $template . '.html.twig',
+                [
+                    'bill' => $bill,
+                ]
+            ),
+            true,
+            false,
+            true,
+            false,
+            ''
+        );
+
+        return $pdf->Output($bill->getName() . '.pdf', $toString ? 'S' : 'I');
     }
 }

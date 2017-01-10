@@ -29,6 +29,11 @@ class Bill
     private $project;
 
     /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\BillItem", mappedBy="bill", cascade={"all"})
+     */
+    private $items;
+
+    /**
      * @var \DateTime
      *
      * @Assert\NotBlank()
@@ -36,6 +41,12 @@ class Bill
      * @ORM\Column(name="date", type="date")
      */
     private $date;
+
+    /**
+     * @var \DateTime
+     * @ORM\Column(type="date", nullable=true)
+     */
+    private $sentViaMailDate;
 
     /**
      * @var int
@@ -56,7 +67,13 @@ class Bill
     /**
      * @var string
      *
-     * @Assert\NotBlank()
+     * @ORM\Column(type="string")
+     */
+    private $token;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="amount", type="decimal", precision=10, scale=2)
      */
     private $amount;
@@ -284,6 +301,15 @@ class Bill
         return $this->name;
     }
 
+    public function updateAmount()
+    {
+        $amount = 0;
+        foreach ($this->items as $item) {
+            $amount += $item->getQuantity() * $item->getAmount();
+        }
+        $this->amount = $amount;
+    }
+
     public function doDun()
     {
         $this->lastDun = new \DateTime();
@@ -318,5 +344,95 @@ class Bill
     public function getShutdownSince()
     {
         return $this->shutdownSince;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->items = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add item
+     *
+     * @param \AppBundle\Entity\BillItem $item
+     *
+     * @return Bill
+     */
+    public function addItem(\AppBundle\Entity\BillItem $item)
+    {
+        $item->setBill($this);
+        $this->items[] = $item;
+
+        return $this;
+    }
+
+    /**
+     * Remove item
+     *
+     * @param \AppBundle\Entity\BillItem $item
+     */
+    public function removeItem(\AppBundle\Entity\BillItem $item)
+    {
+        $this->items->removeElement($item);
+    }
+
+    /**
+     * Get items
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getItems()
+    {
+        return $this->items;
+    }
+
+    /**
+     * Set sentViaMailDate
+     *
+     * @param \DateTime $sentViaMailDate
+     *
+     * @return Bill
+     */
+    public function setSentViaMailDate($sentViaMailDate)
+    {
+        $this->sentViaMailDate = $sentViaMailDate;
+
+        return $this;
+    }
+
+    /**
+     * Get sentViaMailDate
+     *
+     * @return \DateTime
+     */
+    public function getSentViaMailDate()
+    {
+        return $this->sentViaMailDate;
+    }
+
+    /**
+     * Set token
+     *
+     * @param string $token
+     *
+     * @return Bill
+     */
+    public function setToken($token)
+    {
+        $this->token = $token;
+
+        return $this;
+    }
+
+    /**
+     * Get token
+     *
+     * @return string
+     */
+    public function getToken()
+    {
+        return $this->token;
     }
 }
