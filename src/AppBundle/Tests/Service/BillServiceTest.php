@@ -59,6 +59,7 @@ class BillServiceTest extends KernelTestCase
         $this->testData['bill']->setAccountBalance(0.0);
         $this->testData['bill']->setDeadlineDays(6);
         $this->testData['bill']->setAmount(144);
+        $this->testData['bill']->setToken('empty');
 
         if ($flush) {
             $this->em->persist($this->testData['bill']);
